@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Maczeta Life — .io</title>
+  <meta name="description" content="Maczeta Life — Traditional Polish women with machetes in Kraków. Free browser game." />
+  <meta property="og:title" content="Maczeta Life — .io Game" />
+  <meta property="og:description" content="Traditional Polish women × Machetes × Kraków. Play now!" />
+  <meta property="og:type" content="website" />
+  <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #1a1a2e;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  overflow: hidden;
+  color: #fff;
+}
+
+#join-screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  z-index: 100;
+}
+#join-screen h1 {
+  font-size: 4rem; color: #e63946;
+  text-shadow: 3px 3px 0 #000, 0 0 30px rgba(230,57,70,0.5);
+  margin-bottom: 8px; letter-spacing: 4px;
+}
+#join-screen .subtitle {
+  color: #a8dadc; font-size: 1.1rem; margin-bottom: 30px; text-align: center;
+}
+#join-screen input {
+  padding: 14px 24px; font-size: 1.3rem; border: 3px solid #e63946;
+  border-radius: 8px; background: rgba(0,0,0,0.5); color: #fff;
+  text-align: center; width: 280px; margin-bottom: 16px; outline: none;
+}
+#join-screen input::placeholder { color: #666; }
+#join-screen input:focus { border-color: #f1faee; box-shadow: 0 0 20px rgba(230,57,70,0.3); }
+#join-screen button {
+  padding: 14px 48px; font-size: 1.4rem; font-weight: bold;
+  background: #e63946; color: #fff; border: none; border-radius: 8px;
+  cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s;
+}
+#join-screen button:hover { background: #c1121f; transform: scale(1.05); }
+#join-screen .controls-hint {
+  margin-top: 24px; color: #666; font-size: 0.85rem; text-align: center; line-height: 1.6;
+}
+
+canvas { display: block; cursor: crosshair; }
+
+#hud {
+  display: none; position: fixed; top: 10px; left: 10px; z-index: 10;
+}
+#hud .stat {
+  background: rgba(0,0,0,0.7); padding: 6px 12px; border-radius: 6px;
+  margin-bottom: 4px; font-size: 0.9rem;
+}
+
+#leaderboard {
+  display: none; position: fixed; top: 10px; right: 10px;
+  background: rgba(0,0,0,0.8); border: 2px solid #e63946;
+  border-radius: 8px; padding: 12px; min-width: 180px; z-index: 10;
+}
+#leaderboard h3 { color: #e63946; margin-bottom: 8px; font-size: 0.9rem; text-align: center; }
+.lb-entry {
+  display: flex; justify-content: space-between;
+  padding: 3px 0; font-size: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.lb-entry.me { color: #e63946; font-weight: bold; }
+
+#kill-feed {
+  display: none; position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 10;
+}
+.kill-msg {
+  background: rgba(0,0,0,0.8); color: #f4a261; padding: 6px 16px;
+  border-radius: 20px; margin-top: 4px; font-size: 0.85rem;
+  text-align: center; animation: fadeUp 3s forwards;
+}
+@keyframes fadeUp {
+  0% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+#death-screen {
+  display: none; position: fixed; inset: 0;
+  background: rgba(139,0,0,0.7); z-index: 50;
+  flex-direction: column; align-items: center; justify-content: center;
+}
+#death-screen h2 { font-size: 3rem; color: #fff; text-shadow: 2px 2px 0 #000; }
+#death-screen p { color: #f4a261; font-size: 1.2rem; margin-top: 10px; }
+#death-screen .respawn-text { color: #aaa; margin-top: 20px; font-size: 0.9rem; }
+
+#joystick-zone {
+  display: none; position: fixed; bottom: 20px; left: 20px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3);
+  touch-action: none; z-index: 20;
+}
+#joystick-knob {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 40px; height: 40px; border-radius: 50%; background: rgba(230,57,70,0.8);
+}
+#attack-btn {
+  display: none; position: fixed; bottom: 40px; right: 30px;
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(230,57,70,0.7); border: 3px solid #e63946;
+  color: #fff; font-size: 2rem; align-items: center; justify-content: center;
+  touch-action: none; user-select: none; z-index: 20;
+}
+
+@media (max-width: 768px) {
+  #join-screen h1 { font-size: 2.5rem; }
+  #joystick-zone, #attack-btn { display: flex; }
+}
+  </style>
+</head>
+<body>
+
+<div id="join-screen">
+  <h1>🔪 MACZETA LIFE</h1>
+  <p class="subtitle">Traditional Polish Women × Machetes × Kraków</p>
+  <input type="text" id="name-input" placeholder="Wpisz imię / Enter name" maxlength="16" autofocus />
+  <button id="join-btn">WCHODZĘ! / JOIN</button>
+  <div class="controls-hint">
+    WASD — move &nbsp;|&nbsp; Mouse — aim &nbsp;|&nbsp; Click — slash<br/>
+    Mobile: joystick + attack button
+  </div>
+</div>
+
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div class="stat" id="hud-health">❤️ 100</div>
+  <div class="stat" id="hud-score">🪙 0</div>
+  <div class="stat" id="hud-kills">🔪 0</div>
+</div>
+
+<div id="leaderboard">
+  <h3>🏆 TOP MACZETY</h3>
+  <div id="lb-entries"></div>
+</div>
+
+<div id="kill-feed"></div>
+
+<div id="death-screen">
+  <h2>💀 WASTED</h2>
+  <p id="death-msg"></p>
+  <p class="respawn-text">Respawning...</p>
+</div>
+
+<div id="joystick-zone"><div id="joystick-knob"></div></div>
+<div id="attack-btn">🔪</div>
+
+<script>
+// ===== GAME CONFIG =====
+const MAP_W = 3000, MAP_H = 3000;
+const PLAYER_SPEED = 3.5;
+const PLAYER_R = 18;
+const MACHETE_RANGE = 50;
+const MACHETE_ARC = Math.PI / 2;
+const ATTACK_CD = 500;
+const ATTACK_DUR = 200;
+const MAX_ITEMS = 40;
+const BOT_COUNT = 15;
+const RESPAWN_MS = 2000;
+
+const OUTFITS = [
+  { name: 'Krakowiak', color: '#e63946', accent: '#f1faee' },
+  { name: 'Góralka', color: '#2a9d8f', accent: '#e9c46a' },
+  { name: 'Łowicka', color: '#e76f51', accent: '#264653' },
+  { name: 'Śląska', color: '#6a0dad', accent: '#f4a261' },
+  { name: 'Kaszubka', color: '#1d3557', accent: '#a8dadc' },
+  { name: 'Kurpianka', color: '#606c38', accent: '#dda15e' },
+];
+
+const ITEM_TYPES = [
+  { type: 'pierogi', emoji: '🥟', pts: 10, hp: 20 },
+  { type: 'zloty', emoji: '🪙', pts: 25, hp: 0 },
+  { type: 'oscypek', emoji: '🧀', pts: 15, hp: 10 },
+  { type: 'vodka', emoji: '🥃', pts: 50, hp: -10 },
+];
+
+const DEATH_MSGS = [
+  '{k} sliced {v} like a kabanos!',
+  '{v} got the maczeta treatment from {k}!',
+  '{k} sent {v} to pierogi heaven!',
+  '{v} was chopped by {k}. Na zdrowie!',
+  '{k} made {v} into bigos!',
+  '{v} caught {k}\'s machete with their face!',
+  '{k} gave {v} a traditional Polish haircut!',
+  '{k} pokroił(a) {v} jak kabanos!',
+  '{v} dostał(a) maczetą od {k}!',
+  '{k} wysłał(a) {v} do pierogowego nieba!',
+];
+
+const BOT_NAMES = [
+  'Babcia Zofia', 'Jadwiga Ostra', 'Kinga z Wieliczki', 'Basia Rębajło',
+  'Halina Nóż', 'Władka Siekiera', 'Grażyna Fury', 'Ewa z Nowej Huty',
+  'Marta Kosa', 'Celina Ciach', 'Dorota Rąbanka', 'Agnieszka Cięcie',
+  'Wanda z Wawelu', 'Bogusława Miecz', 'Teresa Tasak', 'Krystyna Krew',
+  'Danuta Cios', 'Urszula Szrama', 'Helena Hak', 'Irena Topór',
+];
+
+const LANDMARKS = [
+  { x: 1400, y: 1400, w: 200, h: 200, color: '#8B7355', name: 'Sukiennice' },
+  { x: 800, y: 600, w: 300, h: 250, color: '#696969', name: 'Wawel' },
+  { x: 2200, y: 800, w: 150, h: 180, color: '#8B4513', name: 'Kościół Mariacki' },
+  { x: 1800, y: 2000, w: 200, h: 150, color: '#556B2F', name: 'Kazimierz' },
+  { x: 500, y: 2200, w: 250, h: 120, color: '#4682B4', name: 'ICE Kraków' },
+  { x: 2500, y: 1500, w: 180, h: 200, color: '#8B8682', name: 'Nowa Huta' },
+];
+
+const RIVER = [
+  { x: 0, y: 900, w: 600, h: 80 },
+  { x: 550, y: 850, w: 400, h: 80 },
+  { x: 900, y: 800, w: 500, h: 80 },
+  { x: 1350, y: 750, w: 400, h: 80 },
+  { x: 1700, y: 700, w: 500, h: 80 },
+  { x: 2150, y: 650, w: 400, h: 80 },
+  { x: 2500, y: 600, w: 500, h: 80 },
+];
+
+// ===== STATE =====
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+let playing = false;
+let entities = []; // all players including player[0] = human
+let items = [];
+let itemId = 0;
+let camera = { x: 0, y: 0 };
+let keys = { up: false, down: false, left: false, right: false };
+let mouseAngle = 0;
+const isMobile = 'ontouchstart' in window;
+
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+addEventListener('resize', resize); resize();
+
+function rng(min, max) { return min + Math.random() * (max - min); }
+function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+
+function inLandmark(x, y) {
+  for (const lm of LANDMARKS) {
+    if (x > lm.x && x < lm.x + lm.w && y > lm.y && y < lm.y + lm.h) return true;
+  }
+  return false;
+}
+
+function spawn() {
+  let x, y;
+  do { x = rng(200, MAP_W - 200); y = rng(200, MAP_H - 200); } while (inLandmark(x, y));
+  return { x, y };
+}
+
+function spawnItem() {
+  const t = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
+  const p = spawn();
+  items.push({ id: ++itemId, x: p.x, y: p.y, ...t });
+}
+
+function makeEntity(name, isBot) {
+  const p = spawn();
+  return {
+    name, isBot,
+    x: p.x, y: p.y, angle: Math.random() * Math.PI * 2,
+    score: 0, health: 100, kills: 0, alive: true,
+    outfit: OUTFITS[Math.floor(Math.random() * OUTFITS.length)],
+    attacking: false, attackStart: 0, lastAttack: 0,
+    // Bot AI state
+    targetX: p.x, targetY: p.y, retargetAt: 0, aggroTarget: null,
+  };
+}
+
+function deathMsg(killer, victim) {
+  const m = DEATH_MSGS[Math.floor(Math.random() * DEATH_MSGS.length)];
+  return m.replace('{k}', killer).replace('{v}', victim);
+}
+
+// ===== INIT ITEMS =====
+for (let i = 0; i < MAX_ITEMS; i++) spawnItem();
+
+// ===== JOIN =====
+const joinScreen = document.getElementById('join-screen');
+const nameInput = document.getElementById('name-input');
+
+function startGame() {
+  const name = nameInput.value.trim() || 'Anonim';
+  entities = [];
+  entities.push(makeEntity(name, false)); // player is index 0
+
+  // Shuffle bot names and pick BOT_COUNT
+  const shuffled = [...BOT_NAMES].sort(() => Math.random() - 0.5);
+  for (let i = 0; i < BOT_COUNT; i++) {
+    entities.push(makeEntity(shuffled[i % shuffled.length], true));
+  }
+
+  playing = true;
+  joinScreen.style.display = 'none';
+  document.getElementById('hud').style.display = 'block';
+  document.getElementById('leaderboard').style.display = 'block';
+  document.getElementById('kill-feed').style.display = 'block';
+}
+
+document.getElementById('join-btn').addEventListener('click', startGame);
+nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
+
+// ===== INPUT =====
+addEventListener('keydown', e => {
+  switch (e.key.toLowerCase()) {
+    case 'w': case 'arrowup': keys.up = true; break;
+    case 's': case 'arrowdown': keys.down = true; break;
+    case 'a': case 'arrowleft': keys.left = true; break;
+    case 'd': case 'arrowright': keys.right = true; break;
+  }
+});
+addEventListener('keyup', e => {
+  switch (e.key.toLowerCase()) {
+    case 'w': case 'arrowup': keys.up = false; break;
+    case 's': case 'arrowdown': keys.down = false; break;
+    case 'a': case 'arrowleft': keys.left = false; break;
+    case 'd': case 'arrowright': keys.right = false; break;
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  mouseAngle = Math.atan2(e.clientY - canvas.height / 2, e.clientX - canvas.width / 2);
+});
+canvas.addEventListener('mousedown', () => {
+  if (!playing || !entities[0] || !entities[0].alive) return;
+  const p = entities[0], now = performance.now();
+  if (now - p.lastAttack < ATTACK_CD) return;
+  p.attacking = true; p.attackStart = now; p.lastAttack = now;
+});
+
+// Mobile
+if (isMobile) {
+  const jz = document.getElementById('joystick-zone');
+  const jk = document.getElementById('joystick-knob');
+  const ab = document.getElementById('attack-btn');
+  let jActive = false, jCenter = { x: 0, y: 0 };
+
+  jz.addEventListener('touchstart', e => {
+    e.preventDefault(); jActive = true;
+    const r = jz.getBoundingClientRect();
+    jCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  });
+  addEventListener('touchmove', e => {
+    if (!jActive) return;
+    const t = e.touches[0];
+    const dx = t.clientX - jCenter.x, dy = t.clientY - jCenter.y;
+    const d = Math.min(Math.hypot(dx, dy), 50);
+    const a = Math.atan2(dy, dx);
+    jk.style.left = `${50 + (Math.cos(a) * d / 50) * 40}%`;
+    jk.style.top = `${50 + (Math.sin(a) * d / 50) * 40}%`;
+    keys.up = dy < -15; keys.down = dy > 15; keys.left = dx < -15; keys.right = dx > 15;
+    mouseAngle = a;
+  });
+  addEventListener('touchend', () => {
+    jActive = false; jk.style.left = '50%'; jk.style.top = '50%';
+    keys = { up: false, down: false, left: false, right: false };
+  });
+  ab.addEventListener('touchstart', e => {
+    e.preventDefault();
+    if (!playing || !entities[0] || !entities[0].alive) return;
+    const p = entities[0], now = performance.now();
+    if (now - p.lastAttack < ATTACK_CD) return;
+    p.attacking = true; p.attackStart = now; p.lastAttack = now;
+  });
+}
+
+// ===== BOT AI =====
+function updateBot(bot, now) {
+  if (!bot.alive) return;
+
+  // Retarget
+  if (now > bot.retargetAt) {
+    bot.retargetAt = now + rng(1000, 3000);
+    bot.aggroTarget = null;
+
+    // Look for nearby players to attack
+    let closest = null, closestDist = 300;
+    for (const e of entities) {
+      if (e === bot || !e.alive) continue;
+      const d = dist(bot, e);
+      if (d < closestDist) { closest = e; closestDist = d; }
+    }
+
+    if (closest && Math.random() < 0.6) {
+      bot.aggroTarget = closest;
+    } else {
+      // Wander toward random point or nearest item
+      if (Math.random() < 0.4 && items.length > 0) {
+        let nearItem = items[0], nearDist = Infinity;
+        for (const it of items) {
+          const d = dist(bot, it);
+          if (d < nearDist) { nearItem = it; nearDist = d; }
+        }
+        bot.targetX = nearItem.x; bot.targetY = nearItem.y;
+      } else {
+        bot.targetX = rng(200, MAP_W - 200);
+        bot.targetY = rng(200, MAP_H - 200);
+      }
+    }
+  }
+
+  // Move toward target
+  let tx, ty;
+  if (bot.aggroTarget && bot.aggroTarget.alive) {
+    tx = bot.aggroTarget.x; ty = bot.aggroTarget.y;
+  } else {
+    tx = bot.targetX; ty = bot.targetY;
+  }
+
+  const dx = tx - bot.x, dy = ty - bot.y;
+  const d = Math.hypot(dx, dy);
+  if (d > 5) {
+    const speed = PLAYER_SPEED * (bot.aggroTarget ? 1 : 0.7);
+    const nx = bot.x + (dx / d) * speed;
+    const ny = bot.y + (dy / d) * speed;
+    if (nx > PLAYER_R && nx < MAP_W - PLAYER_R && !inLandmark(nx, bot.y)) bot.x = nx;
+    if (ny > PLAYER_R && ny < MAP_H - PLAYER_R && !inLandmark(bot.x, ny)) bot.y = ny;
+    bot.angle = Math.atan2(dy, dx);
+  }
+
+  // Attack if close to target
+  if (bot.aggroTarget && bot.aggroTarget.alive) {
+    const ad = dist(bot, bot.aggroTarget);
+    if (ad < MACHETE_RANGE + PLAYER_R && now - bot.lastAttack >= ATTACK_CD) {
+      bot.attacking = true; bot.attackStart = now; bot.lastAttack = now;
+    }
+  }
+}
+
+// ===== GAME LOOP =====
+let lastTime = 0;
+const killFeedEl = document.getElementById('kill-feed');
+const deathScreen = document.getElementById('death-screen');
+const deathMsgEl = document.getElementById('death-msg');
+
+function showKill(msg) {
+  const div = document.createElement('div');
+  div.className = 'kill-msg'; div.textContent = msg;
+  killFeedEl.appendChild(div);
+  setTimeout(() => div.remove(), 3000);
+}
+
+function update(now) {
+  if (!playing) return;
+  const me = entities[0];
+
+  // Player movement
+  if (me && me.alive) {
+    let dx = 0, dy = 0;
+    if (keys.up) dy -= 1; if (keys.down) dy += 1;
+    if (keys.left) dx -= 1; if (keys.right) dx += 1;
+    if (dx || dy) {
+      const len = Math.hypot(dx, dy);
+      const nx = me.x + (dx / len) * PLAYER_SPEED;
+      const ny = me.y + (dy / len) * PLAYER_SPEED;
+      if (nx > PLAYER_R && nx < MAP_W - PLAYER_R && !inLandmark(nx, me.y)) me.x = nx;
+      if (ny > PLAYER_R && ny < MAP_H - PLAYER_R && !inLandmark(me.x, ny)) me.y = ny;
+    }
+    me.angle = mouseAngle;
+  }
+
+  // Update bots
+  for (let i = 1; i < entities.length; i++) {
+    if (entities[i].isBot) updateBot(entities[i], now);
+  }
+
+  // Attack resolution + duration
+  for (const e of entities) {
+    if (!e.alive) continue;
+    if (e.attacking && now - e.attackStart > ATTACK_DUR) e.attacking = false;
+
+    // Check hits on first frame of attack
+    if (e.attacking && now - e.attackStart < 20) {
+      for (const o of entities) {
+        if (o === e || !o.alive) continue;
+        if (dist(e, o) > MACHETE_RANGE + PLAYER_R) continue;
+        const aToT = Math.atan2(o.y - e.y, o.x - e.x);
+        let ad = aToT - e.angle;
+        while (ad > Math.PI) ad -= Math.PI * 2;
+        while (ad < -Math.PI) ad += Math.PI * 2;
+        if (Math.abs(ad) < MACHETE_ARC / 2) {
+          o.health -= 35;
+          if (o.health <= 0) {
+            o.alive = false; o.health = 0;
+            e.score += 100; e.kills++;
+            const msg = deathMsg(e.name, o.name);
+            showKill(msg);
+
+            if (o === me) {
+              deathScreen.style.display = 'flex';
+              deathMsgEl.textContent = msg;
+            }
+
+            setTimeout(() => {
+              const sp = spawn();
+              o.x = sp.x; o.y = sp.y; o.health = 100; o.alive = true;
+              o.score = Math.max(0, o.score - 50);
+              if (o === me) deathScreen.style.display = 'none';
+            }, RESPAWN_MS);
+          }
+        }
+      }
+    }
+
+    // Item pickup
+    for (let i = items.length - 1; i >= 0; i--) {
+      if (dist(e, items[i]) < PLAYER_R + 15) {
+        e.score += items[i].pts;
+        e.health = Math.min(100, e.health + items[i].hp);
+        items.splice(i, 1);
+        spawnItem();
+      }
+    }
+  }
+
+  // Camera
+  if (me) {
+    camera.x = me.x - canvas.width / 2;
+    camera.y = me.y - canvas.height / 2;
+  }
+
+  // HUD
+  if (me) {
+    document.getElementById('hud-health').textContent = `❤️ ${me.health}`;
+    document.getElementById('hud-score').textContent = `🪙 ${me.score}`;
+    document.getElementById('hud-kills').textContent = `🔪 ${me.kills}`;
+  }
+
+  // Leaderboard
+  const lb = [...entities].filter(e => e.alive).sort((a, b) => b.score - a.score).slice(0, 10);
+  document.getElementById('lb-entries').innerHTML = lb.map((e, i) =>
+    `<div class="lb-entry${e === me ? ' me' : ''}">${i + 1}. ${e.name}<span>${e.score}</span></div>`
+  ).join('');
+}
+
+// ===== RENDER =====
+function drawGrid() {
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+  const gs = 100;
+  const sx = Math.floor(camera.x / gs) * gs;
+  const sy = Math.floor(camera.y / gs) * gs;
+  for (let x = sx; x < camera.x + canvas.width + gs; x += gs) {
+    ctx.beginPath(); ctx.moveTo(x - camera.x, 0); ctx.lineTo(x - camera.x, canvas.height); ctx.stroke();
+  }
+  for (let y = sy; y < camera.y + canvas.height + gs; y += gs) {
+    ctx.beginPath(); ctx.moveTo(0, y - camera.y); ctx.lineTo(canvas.width, y - camera.y); ctx.stroke();
+  }
+}
+
+function drawMap() {
+  ctx.fillStyle = '#2d5016';
+  ctx.fillRect(
+    Math.max(0, -camera.x), Math.max(0, -camera.y),
+    Math.min(MAP_W, canvas.width + camera.x) - Math.max(0, -camera.x),
+    Math.min(MAP_H, canvas.height + camera.y) - Math.max(0, -camera.y)
+  );
+  drawGrid();
+
+  ctx.fillStyle = '#1e81b0';
+  for (const r of RIVER) ctx.fillRect(r.x - camera.x, r.y - camera.y, r.w, r.h);
+
+  for (const lm of LANDMARKS) {
+    ctx.fillStyle = lm.color;
+    ctx.fillRect(lm.x - camera.x, lm.y - camera.y, lm.w, lm.h);
+    ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(lm.name, lm.x + lm.w / 2 - camera.x, lm.y - 8 - camera.y);
+  }
+
+  ctx.strokeStyle = '#e63946'; ctx.lineWidth = 4;
+  ctx.strokeRect(-camera.x, -camera.y, MAP_W, MAP_H);
+}
+
+function drawItems() {
+  ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const c of items) {
+    const sx = c.x - camera.x, sy = c.y - camera.y;
+    if (sx < -30 || sx > canvas.width + 30 || sy < -30 || sy > canvas.height + 30) continue;
+    ctx.fillText(c.emoji, sx, sy);
+  }
+}
+
+function drawEntities() {
+  for (const p of entities) {
+    if (!p.alive) continue;
+    const sx = p.x - camera.x, sy = p.y - camera.y;
+    if (sx < -100 || sx > canvas.width + 100 || sy < -100 || sy > canvas.height + 100) continue;
+
+    // Body
+    ctx.beginPath(); ctx.arc(sx, sy, PLAYER_R, 0, Math.PI * 2);
+    ctx.fillStyle = p.outfit.color; ctx.fill();
+    ctx.strokeStyle = p.outfit.accent; ctx.lineWidth = 3; ctx.stroke();
+
+    // Skirt detail (triangle below circle for the folk dress look)
+    ctx.beginPath();
+    ctx.moveTo(sx - 14, sy + 12);
+    ctx.lineTo(sx + 14, sy + 12);
+    ctx.lineTo(sx + 18, sy + 28);
+    ctx.lineTo(sx - 18, sy + 28);
+    ctx.closePath();
+    ctx.fillStyle = p.outfit.accent; ctx.fill();
+    ctx.strokeStyle = p.outfit.color; ctx.lineWidth = 1; ctx.stroke();
+
+    // Head kerchief (small triangle on top)
+    ctx.beginPath();
+    ctx.moveTo(sx, sy - PLAYER_R - 6);
+    ctx.lineTo(sx - 10, sy - PLAYER_R + 4);
+    ctx.lineTo(sx + 10, sy - PLAYER_R + 4);
+    ctx.closePath();
+    ctx.fillStyle = p.outfit.color; ctx.fill();
+
+    // Machete
+    const mLen = p.attacking ? 48 : 32;
+    const mW = p.attacking ? 5 : 3;
+    ctx.beginPath();
+    ctx.moveTo(sx + Math.cos(p.angle) * PLAYER_R, sy + Math.sin(p.angle) * PLAYER_R);
+    ctx.lineTo(sx + Math.cos(p.angle) * (PLAYER_R + mLen), sy + Math.sin(p.angle) * (PLAYER_R + mLen));
+    ctx.strokeStyle = p.attacking ? '#fff' : '#ccc'; ctx.lineWidth = mW; ctx.stroke();
+
+    // Machete blade tip
+    const tipX = sx + Math.cos(p.angle) * (PLAYER_R + mLen);
+    const tipY = sy + Math.sin(p.angle) * (PLAYER_R + mLen);
+    const perpA = p.angle + Math.PI / 2;
+    ctx.beginPath();
+    ctx.moveTo(tipX, tipY);
+    ctx.lineTo(tipX + Math.cos(perpA) * 6, tipY + Math.sin(perpA) * 6);
+    ctx.lineTo(tipX + Math.cos(p.angle) * 8, tipY + Math.sin(p.angle) * 8);
+    ctx.closePath();
+    ctx.fillStyle = p.attacking ? '#fff' : '#aaa'; ctx.fill();
+
+    // Attack arc flash
+    if (p.attacking) {
+      ctx.beginPath();
+      ctx.arc(sx, sy, MACHETE_RANGE, p.angle - MACHETE_ARC / 2, p.angle + MACHETE_ARC / 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
+    }
+
+    // Name
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+    ctx.fillText(p.name, sx, sy - 30);
+
+    // Health bar
+    const hbW = 36, hbH = 4;
+    ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(sx - hbW / 2, sy - 28, hbW, hbH);
+    const pct = p.health / 100;
+    ctx.fillStyle = pct > 0.5 ? '#4caf50' : pct > 0.25 ? '#ff9800' : '#e63946';
+    ctx.fillRect(sx - hbW / 2, sy - 28, hbW * pct, hbH);
+  }
+}
+
+function drawMinimap() {
+  const mW = 150, mH = 150;
+  const mx = canvas.width - mW - 10, my = canvas.height - mH - 10;
+  const s = mW / MAP_W;
+
+  ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(mx, my, mW, mH);
+  ctx.strokeStyle = '#e63946'; ctx.lineWidth = 1; ctx.strokeRect(mx, my, mW, mH);
+
+  for (const lm of LANDMARKS) {
+    ctx.fillStyle = lm.color;
+    ctx.fillRect(mx + lm.x * s, my + lm.y * s, Math.max(lm.w * s, 3), Math.max(lm.h * s, 3));
+  }
+  ctx.fillStyle = '#1e81b0';
+  for (const r of RIVER) ctx.fillRect(mx + r.x * s, my + r.y * s, r.w * s, r.h * s);
+
+  for (const e of entities) {
+    if (!e.alive) continue;
+    ctx.fillStyle = e === entities[0] ? '#e63946' : '#fff';
+    ctx.beginPath(); ctx.arc(mx + e.x * s, my + e.y * s, e === entities[0] ? 3 : 2, 0, Math.PI * 2); ctx.fill();
+  }
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  ctx.strokeRect(mx + camera.x * s, my + camera.y * s, canvas.width * s, canvas.height * s);
+}
+
+function frame(ts) {
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (playing) {
+    update(ts);
+    drawMap();
+    drawItems();
+    drawEntities();
+    drawMinimap();
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
