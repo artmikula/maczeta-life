@@ -3,185 +3,320 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Maczeta Life — .io</title>
-  <meta name="description" content="Maczeta Life — Traditional Polish women with machetes in Kraków. Free browser game." />
-  <meta property="og:title" content="Maczeta Life — .io Game" />
-  <meta property="og:description" content="Traditional Polish women × Machetes × Kraków. Play now!" />
+  <title>Maczeta Life — Free .io Machete Game Set in Kraków, Poland</title>
+  <meta name="description" content="Play Maczeta Life — the free .io browser game where traditional Polish women wield machetes in Kraków. Fight bots, collect pierogi, top the leaderboard. No download needed!" />
+  <meta name="keywords" content="maczeta life, machete game, io game, browser game, kraków game, polish game, gry online, gra przeglądarkowa, kraków, polska gra, free io game, multiplayer game, .io game, maczeta" />
+  <meta name="author" content="Centipede Software" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="theme-color" content="#e63946" />
+  <link rel="canonical" href="https://artmikula.github.io/maczeta-life/" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Maczeta Life — Free .io Machete Game in Kraków" />
+  <meta property="og:description" content="Traditional Polish women × Machetes × Kraków. Free browser game — no download. Play now!" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://artmikula.github.io/maczeta-life/" />
+  <meta property="og:site_name" content="Maczeta Life" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="pl_PL" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Maczeta Life — .io Machete Game" />
+  <meta name="twitter:description" content="Traditional Polish women with machetes in Kraków. Free browser game. Play now!" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Maczeta Life",
+    "description": "Free .io browser game where traditional Polish women wield machetes in Kraków. Fight, collect pierogi, and top the leaderboard.",
+    "url": "https://artmikula.github.io/maczeta-life/",
+    "genre": ["Action", "Multiplayer", "IO Game"],
+    "gamePlatform": ["Web Browser", "Mobile Browser"],
+    "applicationCategory": "Game",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Organization", "name": "Centipede Software", "url": "https://centipedesoftware.com" },
+    "inLanguage": ["en", "pl"],
+    "playMode": "SinglePlayer"
+  }
+  </script>
+
+  <!-- Google AdSense placeholder — replace ca-pub with your ID -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
   <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0f1a;font-family:'Segoe UI',system-ui,Arial,sans-serif;overflow:hidden;color:#fff}
 
-body {
-  background: #1a1a2e;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  overflow: hidden;
-  color: #fff;
+/* JOIN SCREEN */
+#join-screen{
+  position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 30%,#1a1a3e 0%,#0f0f1a 70%);z-index:100;
 }
+#join-screen::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.015) 2px,rgba(255,255,255,.015) 4px);
+  pointer-events:none;
+}
+#join-screen h1{
+  font-size:4.5rem;color:#e63946;letter-spacing:6px;
+  text-shadow:0 0 40px rgba(230,57,70,.6),0 4px 0 #8b0000,0 6px 15px rgba(0,0,0,.5);
+  margin-bottom:4px;position:relative;
+}
+.title-machete{font-size:3.5rem;display:block;margin-bottom:8px;filter:drop-shadow(0 0 10px rgba(255,255,255,.3));}
+#join-screen .subtitle{
+  color:#a8dadc;font-size:1.05rem;margin-bottom:6px;text-align:center;opacity:.85;
+}
+#join-screen .tagline{
+  color:#f4a261;font-size:.85rem;margin-bottom:28px;text-align:center;font-style:italic;
+}
+#join-screen input{
+  padding:14px 24px;font-size:1.3rem;border:2px solid rgba(230,57,70,.6);
+  border-radius:10px;background:rgba(0,0,0,.6);color:#fff;backdrop-filter:blur(4px);
+  text-align:center;width:280px;margin-bottom:16px;outline:none;transition:all .3s;
+}
+#join-screen input:focus{border-color:#e63946;box-shadow:0 0 25px rgba(230,57,70,.3);}
+#join-screen input::placeholder{color:#555}
+#join-screen button{
+  padding:16px 52px;font-size:1.4rem;font-weight:bold;
+  background:linear-gradient(180deg,#e63946,#c1121f);color:#fff;border:none;border-radius:10px;
+  cursor:pointer;text-transform:uppercase;letter-spacing:3px;
+  box-shadow:0 4px 15px rgba(230,57,70,.4);transition:all .2s;
+}
+#join-screen button:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(230,57,70,.6);}
+#join-screen button:active{transform:translateY(1px);}
+.controls-hint{margin-top:24px;color:#555;font-size:.8rem;text-align:center;line-height:1.7;}
+.player-count{color:#4caf50;font-size:.9rem;margin-bottom:20px;}
 
-#join-screen {
-  position: fixed; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  z-index: 100;
-}
-#join-screen h1 {
-  font-size: 4rem; color: #e63946;
-  text-shadow: 3px 3px 0 #000, 0 0 30px rgba(230,57,70,0.5);
-  margin-bottom: 8px; letter-spacing: 4px;
-}
-#join-screen .subtitle {
-  color: #a8dadc; font-size: 1.1rem; margin-bottom: 30px; text-align: center;
-}
-#join-screen input {
-  padding: 14px 24px; font-size: 1.3rem; border: 3px solid #e63946;
-  border-radius: 8px; background: rgba(0,0,0,0.5); color: #fff;
-  text-align: center; width: 280px; margin-bottom: 16px; outline: none;
-}
-#join-screen input::placeholder { color: #666; }
-#join-screen input:focus { border-color: #f1faee; box-shadow: 0 0 20px rgba(230,57,70,0.3); }
-#join-screen button {
-  padding: 14px 48px; font-size: 1.4rem; font-weight: bold;
-  background: #e63946; color: #fff; border: none; border-radius: 8px;
-  cursor: pointer; text-transform: uppercase; letter-spacing: 2px; transition: all 0.2s;
-}
-#join-screen button:hover { background: #c1121f; transform: scale(1.05); }
-#join-screen .controls-hint {
-  margin-top: 24px; color: #666; font-size: 0.85rem; text-align: center; line-height: 1.6;
-}
+canvas{display:block;cursor:crosshair}
 
-canvas { display: block; cursor: crosshair; }
-
-#hud {
-  display: none; position: fixed; top: 10px; left: 10px; z-index: 10;
-}
-#hud .stat {
-  background: rgba(0,0,0,0.7); padding: 6px 12px; border-radius: 6px;
-  margin-bottom: 4px; font-size: 0.9rem;
-}
-
-#leaderboard {
-  display: none; position: fixed; top: 10px; right: 10px;
-  background: rgba(0,0,0,0.8); border: 2px solid #e63946;
-  border-radius: 8px; padding: 12px; min-width: 180px; z-index: 10;
-}
-#leaderboard h3 { color: #e63946; margin-bottom: 8px; font-size: 0.9rem; text-align: center; }
-.lb-entry {
-  display: flex; justify-content: space-between;
-  padding: 3px 0; font-size: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-.lb-entry.me { color: #e63946; font-weight: bold; }
-
-#kill-feed {
-  display: none; position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 10;
-}
-.kill-msg {
-  background: rgba(0,0,0,0.8); color: #f4a261; padding: 6px 16px;
-  border-radius: 20px; margin-top: 4px; font-size: 0.85rem;
-  text-align: center; animation: fadeUp 3s forwards;
-}
-@keyframes fadeUp {
-  0% { opacity: 1; transform: translateY(0); }
-  70% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-20px); }
+/* HUD */
+#hud{display:none;position:fixed;top:12px;left:12px;z-index:10}
+#hud .stat{
+  background:rgba(0,0,0,.75);backdrop-filter:blur(4px);padding:7px 14px;
+  border-radius:8px;margin-bottom:5px;font-size:.9rem;
+  border-left:3px solid #e63946;
 }
 
-#death-screen {
-  display: none; position: fixed; inset: 0;
-  background: rgba(139,0,0,0.7); z-index: 50;
-  flex-direction: column; align-items: center; justify-content: center;
+/* LEADERBOARD */
+#leaderboard{
+  display:none;position:fixed;top:12px;right:12px;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(6px);
+  border:1px solid rgba(230,57,70,.4);border-radius:10px;
+  padding:14px;min-width:190px;z-index:10;
 }
-#death-screen h2 { font-size: 3rem; color: #fff; text-shadow: 2px 2px 0 #000; }
-#death-screen p { color: #f4a261; font-size: 1.2rem; margin-top: 10px; }
-#death-screen .respawn-text { color: #aaa; margin-top: 20px; font-size: 0.9rem; }
+#leaderboard h3{color:#e63946;margin-bottom:10px;font-size:.85rem;text-align:center;text-transform:uppercase;letter-spacing:2px;}
+.lb-entry{display:flex;justify-content:space-between;padding:4px 2px;font-size:.8rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.lb-entry.me{color:#e63946;font-weight:bold}
 
-#joystick-zone {
-  display: none; position: fixed; bottom: 20px; left: 20px;
-  width: 120px; height: 120px; border-radius: 50%;
-  background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3);
-  touch-action: none; z-index: 20;
+/* KILL FEED */
+#kill-feed{display:none;position:fixed;bottom:60px;left:50%;transform:translateX(-50%);z-index:10;pointer-events:none}
+.kill-msg{
+  background:rgba(0,0,0,.85);color:#f4a261;padding:6px 18px;
+  border-radius:20px;margin-top:5px;font-size:.82rem;text-align:center;
+  animation:fadeUp 4s forwards;white-space:nowrap;
 }
-#joystick-knob {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 40px; height: 40px; border-radius: 50%; background: rgba(230,57,70,0.8);
+@keyframes fadeUp{0%{opacity:1;transform:translateY(0)}80%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+
+/* DEATH SCREEN */
+#death-screen{
+  display:none;position:fixed;inset:0;z-index:50;
+  flex-direction:column;align-items:center;justify-content:center;
 }
-#attack-btn {
-  display: none; position: fixed; bottom: 40px; right: 30px;
-  width: 80px; height: 80px; border-radius: 50%;
-  background: rgba(230,57,70,0.7); border: 3px solid #e63946;
-  color: #fff; font-size: 2rem; align-items: center; justify-content: center;
-  touch-action: none; user-select: none; z-index: 20;
+#death-screen::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(139,0,0,.8),rgba(50,0,0,.9));
+}
+#death-screen *{position:relative;z-index:1}
+#death-screen h2{font-size:3.5rem;color:#fff;text-shadow:0 0 30px rgba(255,0,0,.6),0 4px 0 #500}
+#death-screen p{color:#f4a261;font-size:1.15rem;margin-top:12px}
+.respawn-text{color:#aaa;margin-top:20px;font-size:.9rem;animation:pulse 1s infinite alternate}
+@keyframes pulse{from{opacity:.5}to{opacity:1}}
+
+/* COMBO */
+#combo-display{
+  display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:15;pointer-events:none;text-align:center;
+}
+#combo-display .combo-text{
+  font-size:2.5rem;font-weight:bold;color:#f4a261;
+  text-shadow:0 0 20px rgba(244,162,97,.6);animation:comboIn .3s ease-out;
+}
+@keyframes comboIn{from{transform:scale(2);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* AD SLOTS */
+.ad-slot{
+  background:rgba(0,0,0,.3);border:1px dashed rgba(255,255,255,.1);
+  text-align:center;color:#333;font-size:.7rem;overflow:hidden;
+}
+#ad-banner-bottom{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:728px;max-width:100%;height:90px;z-index:30;
+  display:none;
+}
+#ad-interstitial{
+  position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+}
+#ad-interstitial .ad-content{width:300px;height:250px;background:rgba(0,0,0,.5);border:1px solid #333;margin-bottom:16px}
+#ad-skip{
+  padding:10px 30px;background:#333;color:#fff;border:none;border-radius:6px;
+  cursor:pointer;font-size:.9rem;
+}
+#ad-skip:disabled{opacity:.4;cursor:default}
+
+/* MOBILE */
+#joystick-zone{
+  display:none;position:fixed;bottom:20px;left:20px;
+  width:130px;height:130px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);
+  touch-action:none;z-index:20;
+}
+#joystick-knob{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle,#e63946,#8b0000);box-shadow:0 0 10px rgba(230,57,70,.4);
+}
+#attack-btn{
+  display:none;position:fixed;bottom:40px;right:30px;
+  width:85px;height:85px;border-radius:50%;
+  background:radial-gradient(circle,rgba(230,57,70,.8),rgba(139,0,0,.8));
+  border:3px solid #e63946;color:#fff;font-size:2.2rem;
+  align-items:center;justify-content:center;
+  touch-action:none;user-select:none;z-index:20;
+  box-shadow:0 0 15px rgba(230,57,70,.3);
+}
+@media(max-width:768px){
+  #join-screen h1{font-size:2.8rem}
+  #joystick-zone,#attack-btn{display:flex}
+  #ad-banner-bottom{height:50px}
 }
 
-@media (max-width: 768px) {
-  #join-screen h1 { font-size: 2.5rem; }
-  #joystick-zone, #attack-btn { display: flex; }
-}
+/* SEO hidden content for crawlers */
+.seo-content{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   </style>
 </head>
 <body>
 
+<!-- SEO content for crawlers -->
+<div class="seo-content">
+  <h1>Maczeta Life — Free .io Browser Game</h1>
+  <h2>Play the Machete Game Set in Kraków, Poland</h2>
+  <p>Maczeta Life is a free browser-based .io game featuring traditional Polish women wielding machetes in the streets of Kraków. Fight AI opponents, collect pierogi and złoty coins, explore landmarks like Wawel Castle, Sukiennice, and Kazimierz. No download required — play instantly in your browser on desktop or mobile.</p>
+  <p>Graj w Maczeta Life — darmową grę przeglądarkową .io z tradycyjnymi polskimi kobietami z maczetami na ulicach Krakowa. Walcz, zbieraj pierogi i złotówki, odkrywaj Wawel, Sukiennice i Kazimierz.</p>
+  <h2>Features</h2>
+  <ul>
+    <li>Free .io browser game — no download needed</li>
+    <li>Set in Kraków, Poland with real landmarks</li>
+    <li>Traditional Polish folk costumes and machetes</li>
+    <li>AI bot opponents with Polish names</li>
+    <li>Collectibles: pierogi, złoty coins, oscypek cheese, vodka</li>
+    <li>Mobile-friendly with touch controls</li>
+    <li>Leaderboard, kill feed, minimap</li>
+    <li>Available in English and Polish</li>
+  </ul>
+</div>
+
+<!-- JOIN SCREEN -->
 <div id="join-screen">
-  <h1>🔪 MACZETA LIFE</h1>
+  <span class="title-machete">🔪</span>
+  <h1>MACZETA LIFE</h1>
   <p class="subtitle">Traditional Polish Women × Machetes × Kraków</p>
+  <p class="tagline">"The only .io game your babcia would be proud of"</p>
+  <p class="player-count">🟢 <span id="fake-players">0</span> players online</p>
   <input type="text" id="name-input" placeholder="Wpisz imię / Enter name" maxlength="16" autofocus />
-  <button id="join-btn">WCHODZĘ! / JOIN</button>
+  <button id="join-btn">⚔️ WCHODZĘ! / JOIN ⚔️</button>
   <div class="controls-hint">
     WASD — move &nbsp;|&nbsp; Mouse — aim &nbsp;|&nbsp; Click — slash<br/>
-    Mobile: joystick + attack button
+    Mobile: joystick + attack button<br/>
+    <span style="color:#e63946">TIP:</span> Collect pierogi 🥟 to heal!
   </div>
 </div>
 
+<!-- GAME CANVAS -->
 <canvas id="game"></canvas>
 
+<!-- HUD -->
 <div id="hud">
   <div class="stat" id="hud-health">❤️ 100</div>
   <div class="stat" id="hud-score">🪙 0</div>
   <div class="stat" id="hud-kills">🔪 0</div>
+  <div class="stat" id="hud-combo" style="display:none;border-left-color:#f4a261">🔥 x1</div>
 </div>
 
+<!-- LEADERBOARD -->
 <div id="leaderboard">
   <h3>🏆 TOP MACZETY</h3>
   <div id="lb-entries"></div>
 </div>
 
+<!-- KILL FEED -->
 <div id="kill-feed"></div>
 
+<!-- COMBO DISPLAY -->
+<div id="combo-display"><div class="combo-text"></div></div>
+
+<!-- DEATH SCREEN -->
 <div id="death-screen">
   <h2>💀 WASTED</h2>
   <p id="death-msg"></p>
   <p class="respawn-text">Respawning...</p>
 </div>
 
+<!-- AD INTERSTITIAL (on death) -->
+<div id="ad-interstitial">
+  <div class="ad-content ad-slot">
+    <!-- AdSense unit goes here -->
+  </div>
+  <button id="ad-skip" disabled>Continue (3)</button>
+</div>
+
+<!-- AD BANNER BOTTOM -->
+<div id="ad-banner-bottom" class="ad-slot">
+  <!-- AdSense banner unit goes here -->
+</div>
+
+<!-- MOBILE CONTROLS -->
 <div id="joystick-zone"><div id="joystick-knob"></div></div>
 <div id="attack-btn">🔪</div>
 
 <script>
-// ===== GAME CONFIG =====
-const MAP_W = 3000, MAP_H = 3000;
-const PLAYER_SPEED = 3.5;
-const PLAYER_R = 18;
-const MACHETE_RANGE = 50;
-const MACHETE_ARC = Math.PI / 2;
-const ATTACK_CD = 500;
-const ATTACK_DUR = 200;
-const MAX_ITEMS = 40;
-const BOT_COUNT = 15;
-const RESPAWN_MS = 2000;
+// ========== CONFIG ==========
+const MAP_W = 3200, MAP_H = 3200;
+const PLAYER_SPEED = 3.8;
+const PLAYER_R = 20;
+const MACHETE_RANGE = 55;
+const MACHETE_ARC = Math.PI * 0.6; // wider arc = easier
+const ATTACK_CD = 450;
+const ATTACK_DUR = 250;
+const MAX_ITEMS = 55;
+const BOT_COUNT = 12;
+const RESPAWN_MS = 2500;
+const HEALTH_REGEN = 0.08; // HP per frame when not recently hit
+const HIT_DAMAGE = 28; // lower = easier
+const CAMERA_LERP = 0.08;
 
 const OUTFITS = [
-  { name: 'Krakowiak', color: '#e63946', accent: '#f1faee' },
-  { name: 'Góralka', color: '#2a9d8f', accent: '#e9c46a' },
-  { name: 'Łowicka', color: '#e76f51', accent: '#264653' },
-  { name: 'Śląska', color: '#6a0dad', accent: '#f4a261' },
-  { name: 'Kaszubka', color: '#1d3557', accent: '#a8dadc' },
-  { name: 'Kurpianka', color: '#606c38', accent: '#dda15e' },
+  { name:'Krakowiak', body:'#e63946', accent:'#f1faee', skirt:'#c1121f', kerchief:'#ff6b6b' },
+  { name:'Góralka', body:'#2a9d8f', accent:'#e9c46a', skirt:'#1a7a6e', kerchief:'#3dc9b0' },
+  { name:'Łowicka', body:'#e76f51', accent:'#264653', skirt:'#c44d34', kerchief:'#f4a261' },
+  { name:'Śląska', body:'#6a0dad', accent:'#f4a261', skirt:'#4a0080', kerchief:'#9b59b6' },
+  { name:'Kaszubka', body:'#1d3557', accent:'#a8dadc', skirt:'#0d253f', kerchief:'#457b9d' },
+  { name:'Kurpianka', body:'#606c38', accent:'#dda15e', skirt:'#414d25', kerchief:'#8fa35a' },
+  { name:'Łemkini', body:'#b5838d', accent:'#6d6875', skirt:'#8e5a65', kerchief:'#e5989b' },
+  { name:'Mazowszanka', body:'#d4a373', accent:'#ccd5ae', skirt:'#b07d4f', kerchief:'#e9c46a' },
 ];
 
 const ITEM_TYPES = [
-  { type: 'pierogi', emoji: '🥟', pts: 10, hp: 20 },
-  { type: 'zloty', emoji: '🪙', pts: 25, hp: 0 },
-  { type: 'oscypek', emoji: '🧀', pts: 15, hp: 10 },
-  { type: 'vodka', emoji: '🥃', pts: 50, hp: -10 },
+  { type:'pierogi', emoji:'🥟', pts:10, hp:25, glow:'#4caf50' },
+  { type:'zloty', emoji:'🪙', pts:30, hp:0, glow:'#ffd700' },
+  { type:'oscypek', emoji:'🧀', pts:15, hp:15, glow:'#ff9800' },
+  { type:'vodka', emoji:'🥃', pts:50, hp:-5, glow:'#9c27b0' },
+  { type:'kielbasa', emoji:'🌭', pts:20, hp:30, glow:'#e91e63' },
+  { type:'barszcz', emoji:'🥣', pts:15, hp:35, glow:'#f44336' },
 ];
 
 const DEATH_MSGS = [
@@ -195,70 +330,96 @@ const DEATH_MSGS = [
   '{k} pokroił(a) {v} jak kabanos!',
   '{v} dostał(a) maczetą od {k}!',
   '{k} wysłał(a) {v} do pierogowego nieba!',
+  '{k} zrobił(a) z {v} bigos!',
+  '{v} met {k}\'s maczeta... and lost!',
+  '{k} said "Smacznego!" and chopped {v}!',
 ];
 
 const BOT_NAMES = [
-  'Babcia Zofia', 'Jadwiga Ostra', 'Kinga z Wieliczki', 'Basia Rębajło',
-  'Halina Nóż', 'Władka Siekiera', 'Grażyna Fury', 'Ewa z Nowej Huty',
-  'Marta Kosa', 'Celina Ciach', 'Dorota Rąbanka', 'Agnieszka Cięcie',
-  'Wanda z Wawelu', 'Bogusława Miecz', 'Teresa Tasak', 'Krystyna Krew',
-  'Danuta Cios', 'Urszula Szrama', 'Helena Hak', 'Irena Topór',
+  'Babcia Zofia','Jadwiga Ostra','Kinga z Wieliczki','Basia Rębajło',
+  'Halina Nóż','Władka Siekiera','Grażyna Fury','Ewa z Nowej Huty',
+  'Marta Kosa','Celina Ciach','Dorota Rąbanka','Agnieszka Cięcie',
+  'Wanda z Wawelu','Bogusława Miecz','Teresa Tasak','Krystyna Krew',
+  'Danuta Cios','Urszula Szrama','Helena Hak','Irena Topór',
+  'Zosia z Zakopanego','Magda Maczetka','Ola z Oświęcimia','Patrycja Piła',
 ];
 
 const LANDMARKS = [
-  { x: 1400, y: 1400, w: 200, h: 200, color: '#8B7355', name: 'Sukiennice' },
-  { x: 800, y: 600, w: 300, h: 250, color: '#696969', name: 'Wawel' },
-  { x: 2200, y: 800, w: 150, h: 180, color: '#8B4513', name: 'Kościół Mariacki' },
-  { x: 1800, y: 2000, w: 200, h: 150, color: '#556B2F', name: 'Kazimierz' },
-  { x: 500, y: 2200, w: 250, h: 120, color: '#4682B4', name: 'ICE Kraków' },
-  { x: 2500, y: 1500, w: 180, h: 200, color: '#8B8682', name: 'Nowa Huta' },
+  { x:1500,y:1500,w:220,h:220,color:'#8B7355',stroke:'#a08060',name:'Sukiennice',nameEN:'Cloth Hall' },
+  { x:700,y:500,w:320,h:280,color:'#696969',stroke:'#808080',name:'Wawel',nameEN:'Wawel Castle' },
+  { x:2300,y:700,w:160,h:200,color:'#8B4513',stroke:'#a0522d',name:'Kościół Mariacki',nameEN:"St. Mary's" },
+  { x:1900,y:2100,w:220,h:170,color:'#556B2F',stroke:'#6b8e23',name:'Kazimierz',nameEN:'Kazimierz' },
+  { x:400,y:2300,w:260,h:130,color:'#4682B4',stroke:'#5a9fd4',name:'ICE Kraków',nameEN:'ICE Kraków' },
+  { x:2600,y:1600,w:200,h:220,color:'#8B8682',stroke:'#a09a96',name:'Nowa Huta',nameEN:'Nowa Huta' },
+  { x:1100,y:2500,w:180,h:150,color:'#705040',stroke:'#8b6347',name:'Schindler\'s',nameEN:"Schindler's" },
+  { x:2100,y:2600,w:160,h:140,color:'#607060',stroke:'#708070',name:'Kopiec Krakusa',nameEN:'Krakus Mound' },
 ];
 
 const RIVER = [
-  { x: 0, y: 900, w: 600, h: 80 },
-  { x: 550, y: 850, w: 400, h: 80 },
-  { x: 900, y: 800, w: 500, h: 80 },
-  { x: 1350, y: 750, w: 400, h: 80 },
-  { x: 1700, y: 700, w: 500, h: 80 },
-  { x: 2150, y: 650, w: 400, h: 80 },
-  { x: 2500, y: 600, w: 500, h: 80 },
+  { x:0,y:950,w:600,h:90 },{ x:550,y:900,w:400,h:90 },
+  { x:900,y:850,w:500,h:90 },{ x:1350,y:800,w:400,h:90 },
+  { x:1700,y:750,w:500,h:90 },{ x:2150,y:700,w:400,h:90 },
+  { x:2500,y:650,w:700,h:90 },
 ];
 
-// ===== STATE =====
+// Decorative trees
+const TREES = [];
+for (let i = 0; i < 80; i++) {
+  TREES.push({ x: Math.random() * MAP_W, y: Math.random() * MAP_H, r: 8 + Math.random() * 12, shade: Math.random() });
+}
+
+// ========== STATE ==========
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 let playing = false;
-let entities = []; // all players including player[0] = human
+let entities = [];
 let items = [];
+let particles = [];
+let floatingTexts = [];
 let itemId = 0;
-let camera = { x: 0, y: 0 };
-let keys = { up: false, down: false, left: false, right: false };
+let camera = { x:0, y:0 };
+let cameraTarget = { x:0, y:0 };
+let keys = { up:false, down:false, left:false, right:false };
 let mouseAngle = 0;
+let screenShake = 0;
+let comboCount = 0;
+let comboTimer = 0;
+let gameTime = 0;
 const isMobile = 'ontouchstart' in window;
 
 function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
 addEventListener('resize', resize); resize();
 
-function rng(min, max) { return min + Math.random() * (max - min); }
+function rng(a, b) { return a + Math.random() * (b - a); }
 function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+function lerp(a, b, t) { return a + (b - a) * t; }
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
 function inLandmark(x, y) {
   for (const lm of LANDMARKS) {
-    if (x > lm.x && x < lm.x + lm.w && y > lm.y && y < lm.y + lm.h) return true;
+    if (x > lm.x - 5 && x < lm.x + lm.w + 5 && y > lm.y - 5 && y < lm.y + lm.h + 5) return true;
+  }
+  return false;
+}
+
+function inRiver(x, y) {
+  for (const r of RIVER) {
+    if (x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h) return true;
   }
   return false;
 }
 
 function spawn() {
-  let x, y;
-  do { x = rng(200, MAP_W - 200); y = rng(200, MAP_H - 200); } while (inLandmark(x, y));
+  let x, y, tries = 0;
+  do { x = rng(200, MAP_W - 200); y = rng(200, MAP_H - 200); tries++; }
+  while ((inLandmark(x, y) || inRiver(x, y)) && tries < 50);
   return { x, y };
 }
 
 function spawnItem() {
   const t = ITEM_TYPES[Math.floor(Math.random() * ITEM_TYPES.length)];
   const p = spawn();
-  items.push({ id: ++itemId, x: p.x, y: p.y, ...t });
+  items.push({ id: ++itemId, x: p.x, y: p.y, ...t, bobPhase: Math.random() * Math.PI * 2 });
 }
 
 function makeEntity(name, isBot) {
@@ -266,48 +427,86 @@ function makeEntity(name, isBot) {
   return {
     name, isBot,
     x: p.x, y: p.y, angle: Math.random() * Math.PI * 2,
+    vx: 0, vy: 0,
     score: 0, health: 100, kills: 0, alive: true,
     outfit: OUTFITS[Math.floor(Math.random() * OUTFITS.length)],
     attacking: false, attackStart: 0, lastAttack: 0,
-    // Bot AI state
+    lastHit: 0, // for health regen delay
+    hitFlash: 0,
     targetX: p.x, targetY: p.y, retargetAt: 0, aggroTarget: null,
+    walkCycle: Math.random() * Math.PI * 2,
   };
 }
 
-function deathMsg(killer, victim) {
-  const m = DEATH_MSGS[Math.floor(Math.random() * DEATH_MSGS.length)];
-  return m.replace('{k}', killer).replace('{v}', victim);
+// ========== PARTICLES ==========
+function addParticle(x, y, color, count, speed, life) {
+  for (let i = 0; i < count; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const s = Math.random() * speed;
+    particles.push({
+      x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+      color, life, maxLife: life, size: 2 + Math.random() * 3,
+    });
+  }
 }
 
-// ===== INIT ITEMS =====
+function addSlashParticle(x, y, angle) {
+  for (let i = 0; i < 8; i++) {
+    const a = angle + rng(-0.5, 0.5);
+    const s = rng(2, 6);
+    particles.push({
+      x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s,
+      color: '#fff', life: 15, maxLife: 15, size: 1.5 + Math.random() * 2,
+    });
+  }
+}
+
+function addFloatingText(x, y, text, color) {
+  floatingTexts.push({ x, y, text, color, life: 60, maxLife: 60 });
+}
+
+// ========== INIT ==========
 for (let i = 0; i < MAX_ITEMS; i++) spawnItem();
 
-// ===== JOIN =====
+// Fake player count
+const fpc = document.getElementById('fake-players');
+fpc.textContent = Math.floor(80 + Math.random() * 120);
+setInterval(() => { fpc.textContent = Math.floor(80 + Math.random() * 120); }, 8000);
+
+function deathMsgFn(k, v) {
+  const m = DEATH_MSGS[Math.floor(Math.random() * DEATH_MSGS.length)];
+  return m.replace('{k}', k).replace('{v}', v);
+}
+
+// ========== JOIN ==========
 const joinScreen = document.getElementById('join-screen');
 const nameInput = document.getElementById('name-input');
 
 function startGame() {
   const name = nameInput.value.trim() || 'Anonim';
   entities = [];
-  entities.push(makeEntity(name, false)); // player is index 0
+  items = []; itemId = 0;
+  for (let i = 0; i < MAX_ITEMS; i++) spawnItem();
+  particles = []; floatingTexts = [];
+  comboCount = 0; comboTimer = 0;
 
-  // Shuffle bot names and pick BOT_COUNT
+  entities.push(makeEntity(name, false));
   const shuffled = [...BOT_NAMES].sort(() => Math.random() - 0.5);
-  for (let i = 0; i < BOT_COUNT; i++) {
-    entities.push(makeEntity(shuffled[i % shuffled.length], true));
-  }
+  for (let i = 0; i < BOT_COUNT; i++) entities.push(makeEntity(shuffled[i], true));
 
   playing = true;
   joinScreen.style.display = 'none';
   document.getElementById('hud').style.display = 'block';
   document.getElementById('leaderboard').style.display = 'block';
   document.getElementById('kill-feed').style.display = 'block';
+  // Show bottom ad banner when playing
+  // document.getElementById('ad-banner-bottom').style.display = 'block';
 }
 
 document.getElementById('join-btn').addEventListener('click', startGame);
 nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
 
-// ===== INPUT =====
+// ========== INPUT ==========
 addEventListener('keydown', e => {
   switch (e.key.toLowerCase()) {
     case 'w': case 'arrowup': keys.up = true; break;
@@ -330,17 +529,21 @@ canvas.addEventListener('mousemove', e => {
 });
 canvas.addEventListener('mousedown', () => {
   if (!playing || !entities[0] || !entities[0].alive) return;
-  const p = entities[0], now = performance.now();
+  const p = entities[0], now = gameTime;
   if (now - p.lastAttack < ATTACK_CD) return;
   p.attacking = true; p.attackStart = now; p.lastAttack = now;
+  addSlashParticle(p.x + Math.cos(p.angle) * 30, p.y + Math.sin(p.angle) * 30, p.angle);
 });
+
+// Prevent right-click menu on canvas
+canvas.addEventListener('contextmenu', e => e.preventDefault());
 
 // Mobile
 if (isMobile) {
   const jz = document.getElementById('joystick-zone');
   const jk = document.getElementById('joystick-knob');
   const ab = document.getElementById('attack-btn');
-  let jActive = false, jCenter = { x: 0, y: 0 };
+  let jActive = false, jCenter = {x:0,y:0};
 
   jz.addEventListener('touchstart', e => {
     e.preventDefault(); jActive = true;
@@ -351,54 +554,81 @@ if (isMobile) {
     if (!jActive) return;
     const t = e.touches[0];
     const dx = t.clientX - jCenter.x, dy = t.clientY - jCenter.y;
-    const d = Math.min(Math.hypot(dx, dy), 50);
+    const d = Math.min(Math.hypot(dx, dy), 55);
     const a = Math.atan2(dy, dx);
-    jk.style.left = `${50 + (Math.cos(a) * d / 50) * 40}%`;
-    jk.style.top = `${50 + (Math.sin(a) * d / 50) * 40}%`;
+    jk.style.left = `${50 + (Math.cos(a) * d / 55) * 42}%`;
+    jk.style.top = `${50 + (Math.sin(a) * d / 55) * 42}%`;
     keys.up = dy < -15; keys.down = dy > 15; keys.left = dx < -15; keys.right = dx > 15;
     mouseAngle = a;
   });
   addEventListener('touchend', () => {
     jActive = false; jk.style.left = '50%'; jk.style.top = '50%';
-    keys = { up: false, down: false, left: false, right: false };
+    keys = { up:false, down:false, left:false, right:false };
   });
   ab.addEventListener('touchstart', e => {
     e.preventDefault();
     if (!playing || !entities[0] || !entities[0].alive) return;
-    const p = entities[0], now = performance.now();
+    const p = entities[0], now = gameTime;
     if (now - p.lastAttack < ATTACK_CD) return;
     p.attacking = true; p.attackStart = now; p.lastAttack = now;
+    addSlashParticle(p.x + Math.cos(p.angle) * 30, p.y + Math.sin(p.angle) * 30, p.angle);
   });
 }
 
-// ===== BOT AI =====
+// ========== AD SYSTEM ==========
+let adShowing = false;
+function showInterstitialAd(callback) {
+  // Uncomment when AdSense is configured:
+  // const ad = document.getElementById('ad-interstitial');
+  // const skipBtn = document.getElementById('ad-skip');
+  // ad.style.display = 'flex';
+  // adShowing = true;
+  // let countdown = 3;
+  // skipBtn.disabled = true;
+  // skipBtn.textContent = `Continue (${countdown})`;
+  // const iv = setInterval(() => {
+  //   countdown--;
+  //   if (countdown <= 0) {
+  //     clearInterval(iv);
+  //     skipBtn.disabled = false;
+  //     skipBtn.textContent = 'Continue';
+  //   } else {
+  //     skipBtn.textContent = `Continue (${countdown})`;
+  //   }
+  // }, 1000);
+  // skipBtn.onclick = () => {
+  //   ad.style.display = 'none';
+  //   adShowing = false;
+  //   callback();
+  // };
+
+  // For now, skip ad
+  callback();
+}
+
+// ========== BOT AI ==========
 function updateBot(bot, now) {
   if (!bot.alive) return;
 
-  // Retarget
   if (now > bot.retargetAt) {
-    bot.retargetAt = now + rng(1000, 3000);
+    bot.retargetAt = now + rng(1500, 4000);
     bot.aggroTarget = null;
 
-    // Look for nearby players to attack
-    let closest = null, closestDist = 300;
+    let closest = null, closestDist = 250; // lower aggro range = easier
     for (const e of entities) {
       if (e === bot || !e.alive) continue;
       const d = dist(bot, e);
       if (d < closestDist) { closest = e; closestDist = d; }
     }
 
-    if (closest && Math.random() < 0.6) {
+    // Bots less likely to target the player specifically (easier)
+    if (closest && Math.random() < (closest.isBot ? 0.5 : 0.35)) {
       bot.aggroTarget = closest;
     } else {
-      // Wander toward random point or nearest item
-      if (Math.random() < 0.4 && items.length > 0) {
-        let nearItem = items[0], nearDist = Infinity;
-        for (const it of items) {
-          const d = dist(bot, it);
-          if (d < nearDist) { nearItem = it; nearDist = d; }
-        }
-        bot.targetX = nearItem.x; bot.targetY = nearItem.y;
+      if (Math.random() < 0.5 && items.length > 0) {
+        let near = items[0], nd = Infinity;
+        for (const it of items) { const d = dist(bot, it); if (d < nd) { near = it; nd = d; } }
+        bot.targetX = near.x; bot.targetY = near.y;
       } else {
         bot.targetX = rng(200, MAP_W - 200);
         bot.targetY = rng(200, MAP_H - 200);
@@ -406,7 +636,6 @@ function updateBot(bot, now) {
     }
   }
 
-  // Move toward target
   let tx, ty;
   if (bot.aggroTarget && bot.aggroTarget.alive) {
     tx = bot.aggroTarget.x; ty = bot.aggroTarget.y;
@@ -417,39 +646,42 @@ function updateBot(bot, now) {
   const dx = tx - bot.x, dy = ty - bot.y;
   const d = Math.hypot(dx, dy);
   if (d > 5) {
-    const speed = PLAYER_SPEED * (bot.aggroTarget ? 1 : 0.7);
+    const speed = PLAYER_SPEED * (bot.aggroTarget ? 0.85 : 0.6); // bots slower than player
     const nx = bot.x + (dx / d) * speed;
     const ny = bot.y + (dy / d) * speed;
-    if (nx > PLAYER_R && nx < MAP_W - PLAYER_R && !inLandmark(nx, bot.y)) bot.x = nx;
-    if (ny > PLAYER_R && ny < MAP_H - PLAYER_R && !inLandmark(bot.x, ny)) bot.y = ny;
+    if (nx > PLAYER_R && nx < MAP_W - PLAYER_R && !inLandmark(nx, bot.y) && !inRiver(nx, bot.y)) bot.x = nx;
+    if (ny > PLAYER_R && ny < MAP_H - PLAYER_R && !inLandmark(bot.x, ny) && !inRiver(bot.x, ny)) bot.y = ny;
     bot.angle = Math.atan2(dy, dx);
+    bot.walkCycle += 0.15;
   }
 
-  // Attack if close to target
   if (bot.aggroTarget && bot.aggroTarget.alive) {
     const ad = dist(bot, bot.aggroTarget);
-    if (ad < MACHETE_RANGE + PLAYER_R && now - bot.lastAttack >= ATTACK_CD) {
+    if (ad < MACHETE_RANGE + PLAYER_R && now - bot.lastAttack >= ATTACK_CD + rng(0, 200)) {
       bot.attacking = true; bot.attackStart = now; bot.lastAttack = now;
     }
   }
 }
 
-// ===== GAME LOOP =====
-let lastTime = 0;
+// ========== GAME LOOP ==========
 const killFeedEl = document.getElementById('kill-feed');
 const deathScreen = document.getElementById('death-screen');
 const deathMsgEl = document.getElementById('death-msg');
+const comboDisplay = document.getElementById('combo-display');
+const comboText = comboDisplay.querySelector('.combo-text');
+const hudCombo = document.getElementById('hud-combo');
 
 function showKill(msg) {
   const div = document.createElement('div');
   div.className = 'kill-msg'; div.textContent = msg;
   killFeedEl.appendChild(div);
-  setTimeout(() => div.remove(), 3000);
+  setTimeout(() => div.remove(), 4000);
 }
 
-function update(now) {
+function update(dt) {
   if (!playing) return;
   const me = entities[0];
+  gameTime += dt;
 
   // Player movement
   if (me && me.alive) {
@@ -460,24 +692,31 @@ function update(now) {
       const len = Math.hypot(dx, dy);
       const nx = me.x + (dx / len) * PLAYER_SPEED;
       const ny = me.y + (dy / len) * PLAYER_SPEED;
-      if (nx > PLAYER_R && nx < MAP_W - PLAYER_R && !inLandmark(nx, me.y)) me.x = nx;
-      if (ny > PLAYER_R && ny < MAP_H - PLAYER_R && !inLandmark(me.x, ny)) me.y = ny;
+      if (nx > PLAYER_R && nx < MAP_W - PLAYER_R && !inLandmark(nx, me.y) && !inRiver(nx, me.y)) me.x = nx;
+      if (ny > PLAYER_R && ny < MAP_H - PLAYER_R && !inLandmark(me.x, ny) && !inRiver(me.x, ny)) me.y = ny;
+      me.walkCycle += 0.2;
     }
     me.angle = mouseAngle;
   }
 
-  // Update bots
+  // Bots
   for (let i = 1; i < entities.length; i++) {
-    if (entities[i].isBot) updateBot(entities[i], now);
+    if (entities[i].isBot) updateBot(entities[i], gameTime);
   }
 
-  // Attack resolution + duration
+  // Combat
   for (const e of entities) {
     if (!e.alive) continue;
-    if (e.attacking && now - e.attackStart > ATTACK_DUR) e.attacking = false;
+    if (e.attacking && gameTime - e.attackStart > ATTACK_DUR) e.attacking = false;
+    if (e.hitFlash > 0) e.hitFlash--;
 
-    // Check hits on first frame of attack
-    if (e.attacking && now - e.attackStart < 20) {
+    // Health regen (not in combat)
+    if (gameTime - e.lastHit > 3000 && e.health < 100) {
+      e.health = Math.min(100, e.health + HEALTH_REGEN);
+    }
+
+    // Hit detection (first frame of attack)
+    if (e.attacking && gameTime - e.attackStart < 20) {
       for (const o of entities) {
         if (o === e || !o.alive) continue;
         if (dist(e, o) > MACHETE_RANGE + PLAYER_R) continue;
@@ -486,11 +725,43 @@ function update(now) {
         while (ad > Math.PI) ad -= Math.PI * 2;
         while (ad < -Math.PI) ad += Math.PI * 2;
         if (Math.abs(ad) < MACHETE_ARC / 2) {
-          o.health -= 35;
+          o.health -= HIT_DAMAGE;
+          o.lastHit = gameTime;
+          o.hitFlash = 8;
+
+          // Hit particles
+          addParticle(o.x, o.y, '#e63946', 6, 3, 20);
+          screenShake = 4;
+
           if (o.health <= 0) {
             o.alive = false; o.health = 0;
-            e.score += 100; e.kills++;
-            const msg = deathMsg(e.name, o.name);
+
+            // Combo system
+            if (e === me) {
+              comboCount++;
+              comboTimer = gameTime + 3000;
+              const bonus = comboCount > 1 ? comboCount * 25 : 0;
+              e.score += 100 + bonus;
+              e.kills++;
+
+              if (comboCount > 1) {
+                comboText.textContent = `🔥 x${comboCount} COMBO! +${bonus}`;
+                comboDisplay.style.display = 'block';
+                setTimeout(() => { comboDisplay.style.display = 'none'; }, 1500);
+                hudCombo.style.display = 'block';
+                hudCombo.textContent = `🔥 x${comboCount}`;
+              }
+            } else {
+              e.score += 100;
+              e.kills++;
+            }
+
+            // Death effects
+            addParticle(o.x, o.y, o.outfit.body, 20, 5, 40);
+            addParticle(o.x, o.y, '#e63946', 10, 3, 30);
+            screenShake = 8;
+
+            const msg = deathMsgFn(e.name, o.name);
             showKill(msg);
 
             if (o === me) {
@@ -498,11 +769,21 @@ function update(now) {
               deathMsgEl.textContent = msg;
             }
 
+            // Respawn
+            const deadRef = o;
+            const isMe = o === me;
             setTimeout(() => {
-              const sp = spawn();
-              o.x = sp.x; o.y = sp.y; o.health = 100; o.alive = true;
-              o.score = Math.max(0, o.score - 50);
-              if (o === me) deathScreen.style.display = 'none';
+              showInterstitialAd(() => {
+                const sp = spawn();
+                deadRef.x = sp.x; deadRef.y = sp.y;
+                deadRef.health = 100; deadRef.alive = true;
+                deadRef.score = Math.max(0, deadRef.score - 30);
+                if (isMe) {
+                  deathScreen.style.display = 'none';
+                  comboCount = 0;
+                  hudCombo.style.display = 'none';
+                }
+              });
             }, RESPAWN_MS);
           }
         }
@@ -511,24 +792,54 @@ function update(now) {
 
     // Item pickup
     for (let i = items.length - 1; i >= 0; i--) {
-      if (dist(e, items[i]) < PLAYER_R + 15) {
-        e.score += items[i].pts;
-        e.health = Math.min(100, e.health + items[i].hp);
+      if (dist(e, items[i]) < PLAYER_R + 18) {
+        const it = items[i];
+        e.score += it.pts;
+        e.health = clamp(e.health + it.hp, 0, 100);
+        addParticle(it.x, it.y, it.glow, 8, 2.5, 20);
+        if (e === me) addFloatingText(it.x, it.y - 20, `+${it.pts}`, it.glow);
         items.splice(i, 1);
         spawnItem();
       }
     }
   }
 
-  // Camera
-  if (me) {
-    camera.x = me.x - canvas.width / 2;
-    camera.y = me.y - canvas.height / 2;
+  // Combo timeout
+  if (comboTimer > 0 && gameTime > comboTimer) {
+    comboCount = 0; comboTimer = 0;
+    hudCombo.style.display = 'none';
   }
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    p.vx *= 0.95; p.vy *= 0.95;
+    p.life--;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+
+  // Floating texts
+  for (let i = floatingTexts.length - 1; i >= 0; i--) {
+    floatingTexts[i].y -= 0.8;
+    floatingTexts[i].life--;
+    if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+  }
+
+  // Camera (smooth lerp)
+  if (me) {
+    cameraTarget.x = me.x - canvas.width / 2;
+    cameraTarget.y = me.y - canvas.height / 2;
+    camera.x = lerp(camera.x, cameraTarget.x, CAMERA_LERP);
+    camera.y = lerp(camera.y, cameraTarget.y, CAMERA_LERP);
+  }
+
+  // Screen shake decay
+  if (screenShake > 0) screenShake *= 0.85;
 
   // HUD
   if (me) {
-    document.getElementById('hud-health').textContent = `❤️ ${me.health}`;
+    document.getElementById('hud-health').textContent = `❤️ ${Math.ceil(me.health)}`;
     document.getElementById('hud-score').textContent = `🪙 ${me.score}`;
     document.getElementById('hud-kills').textContent = `🔪 ${me.kills}`;
   }
@@ -536,14 +847,14 @@ function update(now) {
   // Leaderboard
   const lb = [...entities].filter(e => e.alive).sort((a, b) => b.score - a.score).slice(0, 10);
   document.getElementById('lb-entries').innerHTML = lb.map((e, i) =>
-    `<div class="lb-entry${e === me ? ' me' : ''}">${i + 1}. ${e.name}<span>${e.score}</span></div>`
+    `<div class="lb-entry${e === entities[0] ? ' me' : ''}">${i + 1}. ${e.name}<span>${e.score}</span></div>`
   ).join('');
 }
 
-// ===== RENDER =====
+// ========== RENDER ==========
 function drawGrid() {
-  ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
-  const gs = 100;
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 1;
+  const gs = 80;
   const sx = Math.floor(camera.x / gs) * gs;
   const sy = Math.floor(camera.y / gs) * gs;
   for (let x = sx; x < camera.x + canvas.width + gs; x += gs) {
@@ -555,140 +866,359 @@ function drawGrid() {
 }
 
 function drawMap() {
-  ctx.fillStyle = '#2d5016';
-  ctx.fillRect(
-    Math.max(0, -camera.x), Math.max(0, -camera.y),
-    Math.min(MAP_W, canvas.width + camera.x) - Math.max(0, -camera.x),
-    Math.min(MAP_H, canvas.height + camera.y) - Math.max(0, -camera.y)
-  );
+  // Grass gradient
+  const grd = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 0, canvas.width/2, canvas.height/2, canvas.width);
+  grd.addColorStop(0, '#2d5a16');
+  grd.addColorStop(1, '#1e3a0e');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   drawGrid();
 
-  ctx.fillStyle = '#1e81b0';
-  for (const r of RIVER) ctx.fillRect(r.x - camera.x, r.y - camera.y, r.w, r.h);
-
-  for (const lm of LANDMARKS) {
-    ctx.fillStyle = lm.color;
-    ctx.fillRect(lm.x - camera.x, lm.y - camera.y, lm.w, lm.h);
-    ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText(lm.name, lm.x + lm.w / 2 - camera.x, lm.y - 8 - camera.y);
+  // Trees (background decoration)
+  for (const t of TREES) {
+    const sx = t.x - camera.x, sy = t.y - camera.y;
+    if (sx < -30 || sx > canvas.width + 30 || sy < -30 || sy > canvas.height + 30) continue;
+    // Shadow
+    ctx.beginPath(); ctx.ellipse(sx + 3, sy + t.r * 0.7, t.r * 0.8, t.r * 0.4, 0, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.fill();
+    // Canopy
+    ctx.beginPath(); ctx.arc(sx, sy, t.r, 0, Math.PI * 2);
+    const g = ctx.createRadialGradient(sx - 2, sy - 2, 0, sx, sy, t.r);
+    g.addColorStop(0, t.shade > 0.5 ? '#3a7a20' : '#2d6018');
+    g.addColorStop(1, t.shade > 0.5 ? '#1e4a0e' : '#163808');
+    ctx.fillStyle = g; ctx.fill();
   }
 
-  ctx.strokeStyle = '#e63946'; ctx.lineWidth = 4;
+  // River with animation
+  const riverTime = gameTime * 0.001;
+  for (const r of RIVER) {
+    const rx = r.x - camera.x, ry = r.y - camera.y;
+    const g = ctx.createLinearGradient(rx, ry, rx, ry + r.h);
+    g.addColorStop(0, '#1565a0');
+    g.addColorStop(0.5, '#1e88c8');
+    g.addColorStop(1, '#1565a0');
+    ctx.fillStyle = g;
+    ctx.fillRect(rx, ry, r.w, r.h);
+    // Water shimmer
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    for (let wx = 0; wx < r.w; wx += 30) {
+      const wy = Math.sin(riverTime * 2 + wx * 0.05) * 4;
+      ctx.fillRect(rx + wx, ry + r.h / 2 + wy, 15, 2);
+    }
+  }
+
+  // Landmarks with depth effect
+  for (const lm of LANDMARKS) {
+    const lx = lm.x - camera.x, ly = lm.y - camera.y;
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.fillRect(lx + 4, ly + 4, lm.w, lm.h);
+    // Building
+    ctx.fillStyle = lm.color;
+    ctx.fillRect(lx, ly, lm.w, lm.h);
+    // Top edge highlight
+    ctx.fillStyle = lm.stroke;
+    ctx.fillRect(lx, ly, lm.w, 4);
+    // Side highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.1)';
+    ctx.fillRect(lx, ly, 3, lm.h);
+    // Windows
+    ctx.fillStyle = 'rgba(255,220,100,0.3)';
+    for (let wx = lm.x + 15; wx < lm.x + lm.w - 15; wx += 25) {
+      for (let wy = lm.y + 20; wy < lm.y + lm.h - 15; wy += 25) {
+        ctx.fillRect(wx - camera.x, wy - camera.y, 10, 12);
+      }
+    }
+    // Label with background
+    const text = lm.name;
+    ctx.font = 'bold 11px sans-serif';
+    const tw = ctx.measureText(text).width;
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(lx + lm.w / 2 - tw / 2 - 4, ly - 18, tw + 8, 16);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(text, lx + lm.w / 2, ly - 10);
+  }
+
+  // Map border glow
+  ctx.shadowColor = '#e63946'; ctx.shadowBlur = 15;
+  ctx.strokeStyle = '#e63946'; ctx.lineWidth = 3;
   ctx.strokeRect(-camera.x, -camera.y, MAP_W, MAP_H);
+  ctx.shadowBlur = 0;
 }
 
 function drawItems() {
-  ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (const c of items) {
     const sx = c.x - camera.x, sy = c.y - camera.y;
     if (sx < -30 || sx > canvas.width + 30 || sy < -30 || sy > canvas.height + 30) continue;
-    ctx.fillText(c.emoji, sx, sy);
+    const bob = Math.sin(gameTime * 0.003 + c.bobPhase) * 3;
+    // Glow under item
+    ctx.beginPath(); ctx.arc(sx, sy + bob, 12, 0, Math.PI * 2);
+    ctx.fillStyle = c.glow + '30'; ctx.fill();
+    // Emoji
+    ctx.font = '22px sans-serif';
+    ctx.fillText(c.emoji, sx, sy + bob);
   }
 }
 
-function drawEntities() {
-  for (const p of entities) {
-    if (!p.alive) continue;
-    const sx = p.x - camera.x, sy = p.y - camera.y;
-    if (sx < -100 || sx > canvas.width + 100 || sy < -100 || sy > canvas.height + 100) continue;
+function drawEntity(p) {
+  if (!p.alive) return;
+  const sx = p.x - camera.x, sy = p.y - camera.y;
+  if (sx < -100 || sx > canvas.width + 100 || sy < -100 || sy > canvas.height + 100) return;
 
-    // Body
-    ctx.beginPath(); ctx.arc(sx, sy, PLAYER_R, 0, Math.PI * 2);
-    ctx.fillStyle = p.outfit.color; ctx.fill();
-    ctx.strokeStyle = p.outfit.accent; ctx.lineWidth = 3; ctx.stroke();
+  const o = p.outfit;
+  const wobble = Math.sin(p.walkCycle) * 2;
 
-    // Skirt detail (triangle below circle for the folk dress look)
+  // Shadow
+  ctx.beginPath(); ctx.ellipse(sx, sy + 28, 16, 6, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fill();
+
+  // Flash on hit
+  const flash = p.hitFlash > 0;
+
+  // Skirt (trapezoid)
+  ctx.beginPath();
+  ctx.moveTo(sx - 15, sy + 10);
+  ctx.lineTo(sx + 15, sy + 10);
+  ctx.lineTo(sx + 20 + wobble, sy + 28);
+  ctx.lineTo(sx - 20 + wobble, sy + 28);
+  ctx.closePath();
+  ctx.fillStyle = flash ? '#fff' : o.skirt; ctx.fill();
+  ctx.strokeStyle = o.accent; ctx.lineWidth = 1; ctx.stroke();
+  // Skirt pattern (horizontal stripes)
+  ctx.strokeStyle = o.accent + '60'; ctx.lineWidth = 1;
+  for (let sy2 = sy + 14; sy2 < sy + 26; sy2 += 4) {
     ctx.beginPath();
-    ctx.moveTo(sx - 14, sy + 12);
-    ctx.lineTo(sx + 14, sy + 12);
-    ctx.lineTo(sx + 18, sy + 28);
-    ctx.lineTo(sx - 18, sy + 28);
-    ctx.closePath();
-    ctx.fillStyle = p.outfit.accent; ctx.fill();
-    ctx.strokeStyle = p.outfit.color; ctx.lineWidth = 1; ctx.stroke();
-
-    // Head kerchief (small triangle on top)
-    ctx.beginPath();
-    ctx.moveTo(sx, sy - PLAYER_R - 6);
-    ctx.lineTo(sx - 10, sy - PLAYER_R + 4);
-    ctx.lineTo(sx + 10, sy - PLAYER_R + 4);
-    ctx.closePath();
-    ctx.fillStyle = p.outfit.color; ctx.fill();
-
-    // Machete
-    const mLen = p.attacking ? 48 : 32;
-    const mW = p.attacking ? 5 : 3;
-    ctx.beginPath();
-    ctx.moveTo(sx + Math.cos(p.angle) * PLAYER_R, sy + Math.sin(p.angle) * PLAYER_R);
-    ctx.lineTo(sx + Math.cos(p.angle) * (PLAYER_R + mLen), sy + Math.sin(p.angle) * (PLAYER_R + mLen));
-    ctx.strokeStyle = p.attacking ? '#fff' : '#ccc'; ctx.lineWidth = mW; ctx.stroke();
-
-    // Machete blade tip
-    const tipX = sx + Math.cos(p.angle) * (PLAYER_R + mLen);
-    const tipY = sy + Math.sin(p.angle) * (PLAYER_R + mLen);
-    const perpA = p.angle + Math.PI / 2;
-    ctx.beginPath();
-    ctx.moveTo(tipX, tipY);
-    ctx.lineTo(tipX + Math.cos(perpA) * 6, tipY + Math.sin(perpA) * 6);
-    ctx.lineTo(tipX + Math.cos(p.angle) * 8, tipY + Math.sin(p.angle) * 8);
-    ctx.closePath();
-    ctx.fillStyle = p.attacking ? '#fff' : '#aaa'; ctx.fill();
-
-    // Attack arc flash
-    if (p.attacking) {
-      ctx.beginPath();
-      ctx.arc(sx, sy, MACHETE_RANGE, p.angle - MACHETE_ARC / 2, p.angle + MACHETE_ARC / 2);
-      ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 2; ctx.stroke();
-    }
-
-    // Name
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 13px sans-serif';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-    ctx.fillText(p.name, sx, sy - 30);
-
-    // Health bar
-    const hbW = 36, hbH = 4;
-    ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(sx - hbW / 2, sy - 28, hbW, hbH);
-    const pct = p.health / 100;
-    ctx.fillStyle = pct > 0.5 ? '#4caf50' : pct > 0.25 ? '#ff9800' : '#e63946';
-    ctx.fillRect(sx - hbW / 2, sy - 28, hbW * pct, hbH);
+    const spread = (sy2 - sy - 10) / 18;
+    ctx.moveTo(sx - 15 - spread * 5 + wobble * spread, sy2);
+    ctx.lineTo(sx + 15 + spread * 5 + wobble * spread, sy2);
+    ctx.stroke();
   }
+
+  // Body (torso)
+  ctx.beginPath(); ctx.arc(sx, sy, PLAYER_R - 2, 0, Math.PI * 2);
+  const bodyGrad = ctx.createRadialGradient(sx - 4, sy - 4, 2, sx, sy, PLAYER_R);
+  bodyGrad.addColorStop(0, flash ? '#fff' : o.body);
+  bodyGrad.addColorStop(1, flash ? '#faa' : o.skirt);
+  ctx.fillStyle = bodyGrad; ctx.fill();
+  ctx.strokeStyle = o.accent; ctx.lineWidth = 2.5; ctx.stroke();
+
+  // Apron (white front detail)
+  ctx.beginPath();
+  ctx.moveTo(sx - 8, sy + 2);
+  ctx.lineTo(sx + 8, sy + 2);
+  ctx.lineTo(sx + 10, sy + 16);
+  ctx.lineTo(sx - 10, sy + 16);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.fill();
+
+  // Head
+  ctx.beginPath(); ctx.arc(sx, sy - PLAYER_R + 2, 8, 0, Math.PI * 2);
+  ctx.fillStyle = '#fdbcb4'; ctx.fill(); // skin tone
+  ctx.strokeStyle = o.body; ctx.lineWidth = 1; ctx.stroke();
+
+  // Kerchief (head covering)
+  ctx.beginPath();
+  ctx.moveTo(sx, sy - PLAYER_R - 8);
+  ctx.lineTo(sx - 12, sy - PLAYER_R + 5);
+  ctx.lineTo(sx + 12, sy - PLAYER_R + 5);
+  ctx.closePath();
+  ctx.fillStyle = flash ? '#fff' : o.kerchief; ctx.fill();
+  // Kerchief ties
+  ctx.beginPath();
+  ctx.moveTo(sx - 8, sy - PLAYER_R + 5);
+  ctx.lineTo(sx - 12, sy - PLAYER_R + 12);
+  ctx.moveTo(sx + 8, sy - PLAYER_R + 5);
+  ctx.lineTo(sx + 12, sy - PLAYER_R + 12);
+  ctx.strokeStyle = o.kerchief; ctx.lineWidth = 2; ctx.stroke();
+
+  // Eyes (tiny dots)
+  ctx.fillStyle = '#333';
+  ctx.fillRect(sx - 4, sy - PLAYER_R + 1, 2, 2);
+  ctx.fillRect(sx + 2, sy - PLAYER_R + 1, 2, 2);
+
+  // === MACHETE ===
+  const mBaseLen = 35;
+  const mLen = p.attacking ? 52 : mBaseLen;
+  const mStartX = sx + Math.cos(p.angle) * (PLAYER_R - 2);
+  const mStartY = sy + Math.sin(p.angle) * (PLAYER_R - 2);
+  const mEndX = sx + Math.cos(p.angle) * (PLAYER_R + mLen);
+  const mEndY = sy + Math.sin(p.angle) * (PLAYER_R + mLen);
+
+  // Handle
+  ctx.beginPath();
+  ctx.moveTo(mStartX, mStartY);
+  const mMidX = sx + Math.cos(p.angle) * (PLAYER_R + 12);
+  const mMidY = sy + Math.sin(p.angle) * (PLAYER_R + 12);
+  ctx.lineTo(mMidX, mMidY);
+  ctx.strokeStyle = '#8B4513'; ctx.lineWidth = 5; ctx.stroke();
+
+  // Blade
+  const perpA = p.angle + Math.PI / 2;
+  const bladeW = p.attacking ? 5 : 3.5;
+  ctx.beginPath();
+  ctx.moveTo(mMidX + Math.cos(perpA) * bladeW, mMidY + Math.sin(perpA) * bladeW);
+  ctx.lineTo(mMidX - Math.cos(perpA) * bladeW, mMidY - Math.sin(perpA) * bladeW);
+  ctx.lineTo(mEndX - Math.cos(perpA) * 1, mEndY - Math.sin(perpA) * 1);
+  ctx.lineTo(mEndX + Math.cos(p.angle) * 6, mEndY + Math.sin(p.angle) * 6);
+  ctx.lineTo(mEndX + Math.cos(perpA) * 2, mEndY + Math.sin(perpA) * 2);
+  ctx.closePath();
+  if (p.attacking) {
+    ctx.fillStyle = '#e0e0e0';
+    ctx.shadowColor = '#fff'; ctx.shadowBlur = 10;
+  } else {
+    ctx.fillStyle = '#b0b0b0';
+  }
+  ctx.fill();
+  ctx.strokeStyle = '#888'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Attack slash arc
+  if (p.attacking) {
+    const progress = (gameTime - p.attackStart) / ATTACK_DUR;
+    const arcAlpha = 1 - progress;
+    ctx.beginPath();
+    ctx.arc(sx, sy, MACHETE_RANGE + 5, p.angle - MACHETE_ARC / 2, p.angle + MACHETE_ARC / 2);
+    ctx.strokeStyle = `rgba(255,255,255,${arcAlpha * 0.5})`; ctx.lineWidth = 3; ctx.stroke();
+    // Inner arc
+    ctx.beginPath();
+    ctx.arc(sx, sy, MACHETE_RANGE - 10, p.angle - MACHETE_ARC / 2 + progress * 0.3, p.angle + MACHETE_ARC / 2 - progress * 0.3);
+    ctx.strokeStyle = `rgba(230,57,70,${arcAlpha * 0.4})`; ctx.lineWidth = 2; ctx.stroke();
+  }
+
+  // Name
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+  ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
+  ctx.fillText(p.name, sx, sy - 34);
+  ctx.shadowBlur = 0;
+
+  // Health bar
+  const hbW = 40, hbH = 5;
+  const hbX = sx - hbW / 2, hbY = sy - 32;
+  ctx.fillStyle = 'rgba(0,0,0,0.6)';
+  ctx.beginPath(); ctx.roundRect(hbX, hbY, hbW, hbH, 2); ctx.fill();
+  const pct = p.health / 100;
+  const hpGrad = ctx.createLinearGradient(hbX, 0, hbX + hbW, 0);
+  if (pct > 0.5) { hpGrad.addColorStop(0, '#4caf50'); hpGrad.addColorStop(1, '#66bb6a'); }
+  else if (pct > 0.25) { hpGrad.addColorStop(0, '#ff9800'); hpGrad.addColorStop(1, '#ffa726'); }
+  else { hpGrad.addColorStop(0, '#e63946'); hpGrad.addColorStop(1, '#ff6b6b'); }
+  ctx.fillStyle = hpGrad;
+  ctx.beginPath(); ctx.roundRect(hbX, hbY, hbW * pct, hbH, 2); ctx.fill();
+}
+
+function drawParticles() {
+  for (const p of particles) {
+    const sx = p.x - camera.x, sy = p.y - camera.y;
+    const alpha = p.life / p.maxLife;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(sx, sy, p.size * alpha, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawFloatingTexts() {
+  for (const ft of floatingTexts) {
+    const sx = ft.x - camera.x, sy = ft.y - camera.y;
+    const alpha = ft.life / ft.maxLife;
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = ft.color;
+    ctx.font = 'bold 16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 3;
+    ctx.fillText(ft.text, sx, sy);
+    ctx.shadowBlur = 0;
+  }
+  ctx.globalAlpha = 1;
 }
 
 function drawMinimap() {
-  const mW = 150, mH = 150;
-  const mx = canvas.width - mW - 10, my = canvas.height - mH - 10;
+  const mW = 140, mH = 140;
+  const mx = canvas.width - mW - 12, my = canvas.height - mH - 12;
   const s = mW / MAP_W;
 
-  ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(mx, my, mW, mH);
-  ctx.strokeStyle = '#e63946'; ctx.lineWidth = 1; ctx.strokeRect(mx, my, mW, mH);
+  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  ctx.beginPath(); ctx.roundRect(mx - 2, my - 2, mW + 4, mH + 4, 6); ctx.fill();
+  ctx.fillStyle = '#1a3a0e'; ctx.fillRect(mx, my, mW, mH);
 
+  // River
+  ctx.fillStyle = '#1565a0';
+  for (const r of RIVER) ctx.fillRect(mx + r.x * s, my + r.y * s, r.w * s, r.h * s);
+
+  // Landmarks
   for (const lm of LANDMARKS) {
     ctx.fillStyle = lm.color;
     ctx.fillRect(mx + lm.x * s, my + lm.y * s, Math.max(lm.w * s, 3), Math.max(lm.h * s, 3));
   }
-  ctx.fillStyle = '#1e81b0';
-  for (const r of RIVER) ctx.fillRect(mx + r.x * s, my + r.y * s, r.w * s, r.h * s);
 
+  // Entities
   for (const e of entities) {
     if (!e.alive) continue;
-    ctx.fillStyle = e === entities[0] ? '#e63946' : '#fff';
-    ctx.beginPath(); ctx.arc(mx + e.x * s, my + e.y * s, e === entities[0] ? 3 : 2, 0, Math.PI * 2); ctx.fill();
+    const isMe = e === entities[0];
+    ctx.fillStyle = isMe ? '#e63946' : 'rgba(255,255,255,0.6)';
+    ctx.beginPath(); ctx.arc(mx + e.x * s, my + e.y * s, isMe ? 3 : 1.5, 0, Math.PI * 2); ctx.fill();
   }
 
-  ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+  // Viewport
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1;
   ctx.strokeRect(mx + camera.x * s, my + camera.y * s, canvas.width * s, canvas.height * s);
+
+  // Border
+  ctx.strokeStyle = 'rgba(230,57,70,0.5)'; ctx.lineWidth = 1;
+  ctx.strokeRect(mx, my, mW, mH);
 }
 
+// Vignette overlay
+function drawVignette() {
+  const g = ctx.createRadialGradient(canvas.width/2, canvas.height/2, canvas.width * 0.3, canvas.width/2, canvas.height/2, canvas.width * 0.7);
+  g.addColorStop(0, 'rgba(0,0,0,0)');
+  g.addColorStop(1, 'rgba(0,0,0,0.3)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// Low health warning
+function drawLowHealthWarning() {
+  const me = entities[0];
+  if (!me || !me.alive || me.health > 30) return;
+  const alpha = (1 - me.health / 30) * 0.3 * (0.5 + Math.sin(gameTime * 0.005) * 0.5);
+  ctx.fillStyle = `rgba(139,0,0,${alpha})`;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+let lastTS = 0;
 function frame(ts) {
-  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const dt = Math.min(ts - lastTS, 50);
+  lastTS = ts;
+
+  // Screen shake offset
+  const shakeX = screenShake > 0.5 ? (Math.random() - 0.5) * screenShake : 0;
+  const shakeY = screenShake > 0.5 ? (Math.random() - 0.5) * screenShake : 0;
+
+  ctx.save();
+  ctx.translate(shakeX, shakeY);
+
+  ctx.fillStyle = '#0a0a0a'; ctx.fillRect(-5, -5, canvas.width + 10, canvas.height + 10);
+
   if (playing) {
-    update(ts);
+    update(dt);
     drawMap();
     drawItems();
-    drawEntities();
+    // Sort entities by Y for depth
+    const sorted = [...entities].filter(e => e.alive).sort((a, b) => a.y - b.y);
+    for (const e of sorted) drawEntity(e);
+    drawParticles();
+    drawFloatingTexts();
+    drawVignette();
+    drawLowHealthWarning();
     drawMinimap();
   }
+
+  ctx.restore();
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
