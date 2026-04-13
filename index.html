@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Maczeta Life</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="hud">
+      <section class="topbar panel">
+        <div class="topbar-main">
+          <div class="health-cluster">
+            <div class="health-copy">
+              <span class="label">Życie</span>
+              <span class="value large" id="health">100</span>
+            </div>
+            <div class="bar health-bar">
+              <span id="health-fill"></span>
+            </div>
+          </div>
+          <div class="stat compact">
+            <span class="label">Wynik</span>
+            <span class="value" id="score">00000</span>
+          </div>
+          <div class="stat compact">
+            <span class="label">Seria</span>
+            <span class="value" id="streak">x0</span>
+          </div>
+          <div class="stat compact">
+            <span class="label">Mnożnik</span>
+            <span class="value" id="multiplier">x1.0</span>
+          </div>
+          <div class="stat compact">
+            <span class="label">Czas</span>
+            <span class="value" id="timer">00:00</span>
+          </div>
+          <div class="stat compact wide">
+            <span class="label">Broń</span>
+            <span class="value" id="weapon">Maczeta</span>
+          </div>
+          <div class="stat compact">
+            <span class="label">Zadyma</span>
+            <span class="value" id="crowd">07</span>
+          </div>
+        </div>
+        <div class="fury-cluster">
+          <div class="fury-copy">
+            <span class="label">Furia</span>
+            <span class="value" id="fury-status">Ładowanie</span>
+          </div>
+          <div class="bar combo-bar">
+            <span id="combo-fill"></span>
+          </div>
+          <div class="bar fury-bar">
+            <span id="fury-fill"></span>
+          </div>
+        </div>
+      </section>
+
+      <div class="sidebar left-sidebar">
+        <section class="feed panel">
+          <span class="eyebrow">Uliczny komentarz</span>
+          <ul id="feed-list"></ul>
+        </section>
+
+        <section class="ads panel">
+          <span class="eyebrow">Płatna promocja</span>
+          <div class="ad-slot">
+            <span class="ad-tag">Sponsor</span>
+            <strong id="ad-title-1">OBWAR-BANK</strong>
+            <p id="ad-copy-1">Szybka pożyczka na nową maczetę. Decyzja zanim minie czerwone.</p>
+          </div>
+          <div class="ad-slot alt">
+            <span class="ad-tag">Poleca dzielnica</span>
+            <strong id="ad-title-2">MLECZNY BOOST</strong>
+            <p id="ad-copy-2">Pierogi mocy. +15 do odwagi i zero pytań o pochodzenie farszu.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="sidebar right-sidebar">
+        <section class="leaderboard panel">
+          <span class="eyebrow">Tablica inicjałów</span>
+          <ol id="leaderboard"></ol>
+        </section>
+
+        <section class="ads panel">
+          <span class="eyebrow">Reklama taktyczna</span>
+          <div class="ad-slot">
+            <span class="ad-tag">Lokowanie produktu</span>
+            <strong id="ad-title-3">KOMINIARY.EXE</strong>
+            <p id="ad-copy-3">Haftowane maski premium. Wzór ludowy, nerwowa atmosfera gratis.</p>
+          </div>
+          <div class="ad-slot alt">
+            <span class="ad-tag">Szyld osiedlowy</span>
+            <strong id="ad-title-4">NOWA HUTA FM</strong>
+            <p id="ad-copy-4">Nadajemy tylko hity, plotki i ostrzeżenia o zadymie na placu.</p>
+          </div>
+        </section>
+      </div>
+
+      <section class="controls panel">
+        <span>WSAD: ruch</span>
+        <span>Shift: sprint</span>
+        <span>Q: dash</span>
+        <span>Spacja / LPM: szybki cios</span>
+        <span>E / PPM: mocny</span>
+        <span>R: restart po zgonie</span>
+      </section>
+    </div>
+
+    <div class="announcer" id="announcer" aria-live="polite"></div>
+    <div class="impact-flash" id="impact-flash" aria-hidden="true"></div>
+
+    <div class="overlay" id="overlay">
+      <div class="overlay-scene" aria-hidden="true">
+        <div class="scene-sun"></div>
+        <div class="scene-haze"></div>
+        <div class="scene-ground"></div>
+        <div class="figure figure-left">
+          <span class="blade blade-low"></span>
+        </div>
+        <div class="figure figure-center">
+          <span class="blade blade-front"></span>
+        </div>
+        <div class="figure figure-right">
+          <span class="blade blade-high"></span>
+        </div>
+        <div class="figure figure-back-left"></div>
+        <div class="figure figure-back-right"></div>
+      </div>
+      <div class="overlay-card panel">
+        <span class="eyebrow">Loading Screen</span>
+        <h2 id="title">Wejdź do zadymy</h2>
+        <p id="message">
+          Wchodzisz na plac i tniesz wynik bronią białą. AI tłucze się też między sobą, więc w
+          każdej chwili robi się chaos.
+        </p>
+        <div class="loading-copy">
+          <span class="loading-label">Aktualny sektor</span>
+          <strong>Kraków, plac i boczne ulice</strong>
+        </div>
+        <label class="initials hidden" id="initials-wrap" for="initials-input">
+          Twoje inicjały na tablicę
+          <input id="initials-input" type="text" maxlength="3" value="MZ" autocomplete="off" />
+        </label>
+        <button id="start-button">Start</button>
+      </div>
+    </div>
+
+    <div class="touch-controls">
+      <div class="touch-joystick-zone" id="move-joystick-zone">
+        <div class="touch-joystick-base" id="move-joystick-base">
+          <div class="touch-joystick-knob" id="move-joystick-knob"></div>
+        </div>
+      </div>
+      <div class="touch-actions">
+        <button class="touch-button accent" data-control="attack">Cios</button>
+        <button class="touch-button accent" data-control="heavy">Mocny</button>
+        <button class="touch-button accent" data-control="dash">Dash</button>
+        <button class="touch-button accent-alt" data-control="sprint">Sprint</button>
+      </div>
+      <div class="touch-joystick-zone" id="look-joystick-zone">
+        <div class="touch-joystick-base" id="look-joystick-base">
+          <div class="touch-joystick-knob" id="look-joystick-knob"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.164.1/build/three.module.js"
+        }
+      }
+    </script>
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>

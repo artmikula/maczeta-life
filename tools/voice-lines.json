@@ -1,0 +1,64 @@
+{
+  "lines": [
+    { "file": "start-1.mp3", "text": "Maczeta Life. Wchodzę na plac, jebię wszystkie." },
+    { "file": "start-2.mp3", "text": "Kraków, kurwa, gotowy. Lecimy." },
+    { "file": "start-3.mp3", "text": "Kominiarki, maczety, zadyma. No to zaczynamy, kurwa." },
+
+    { "file": "hurt-1.mp3", "text": "Kurwa, to bolało." },
+    { "file": "hurt-2.mp3", "text": "Jebła mnie ta suka." },
+    { "file": "hurt-3.mp3", "text": "Ała kurwa, kto tak macha?" },
+    { "file": "hurt-4.mp3", "text": "Zaraz ci oddam, ty kurwo." },
+
+    { "file": "kill-1.mp3", "text": "Wybebeszyłeś kurwę! Następna." },
+    { "file": "kill-2.mp3", "text": "Padła suka. Kroję dalej." },
+    { "file": "kill-3.mp3", "text": "I po kurwie. Kto następny?" },
+    { "file": "kill-4.mp3", "text": "Na ziemię z tą dziwką. Łatwizna." },
+    { "file": "kill-5.mp3", "text": "Wybebesze tą kurwę!" },
+    { "file": "kill-6.mp3", "text": "Maczeta w pizdę! Leży." },
+    { "file": "kill-7.mp3", "text": "Dostała maczetą w ryj. Koniec." },
+    { "file": "kill-8.mp3", "text": "Jedna kurwa mniej na Rynku." },
+    { "file": "kill-9.mp3", "text": "Wyjebało ją. Następna suka." },
+    { "file": "kill-10.mp3", "text": "Wypierdalaj z mojego placu, kurwo." },
+
+    { "file": "death-1.mp3", "text": "Kurwa, padłem. Ale wracam." },
+    { "file": "death-2.mp3", "text": "Jebła mnie. Zaraz wchodzę z powrotem." },
+    { "file": "death-3.mp3", "text": "Kurwa mać, zabiły mnie te suki." },
+
+    { "file": "pickup-1.mp3", "text": "O kurwa, apteczka. Łapię." },
+    { "file": "pickup-2.mp3", "text": "Coś na ziemi. Moje, kurwa." },
+
+    { "file": "miss-1.mp3", "text": "Pudło, kurwa. Podejdź bliżej, suko." },
+    { "file": "miss-2.mp3", "text": "Maczeta cięła powietrze. Zaraz trafię, kurwa." },
+    { "file": "miss-3.mp3", "text": "Nie uciekniesz, kurwo. Zaraz dostaniesz." },
+
+    { "file": "streak-1.mp3", "text": "Seria, kurwa! Nikt mnie nie zatrzyma." },
+    { "file": "streak-2.mp3", "text": "Kolejna kurwa pada. Jadę jak pierdolony czołg." },
+    { "file": "streak-3.mp3", "text": "Masakra na Rynku! Jebię po kolei!" },
+    { "file": "streak-4.mp3", "text": "Pierdolę, jestem nie do zatrzymania!" },
+    { "file": "streak-5.mp3", "text": "Suki padają jedna po drugiej. Nie mogę przestać." },
+
+    { "file": "fury-1.mp3", "text": "Furia, kurwa! Teraz lecę po wszystkie." },
+    { "file": "fury-2.mp3", "text": "Tryb masakry, suki. Uciekajcie." },
+    { "file": "fury-3.mp3", "text": "Odpierdalam furię! Maczeta idzie w ruch!" },
+
+    { "file": "finisher-1.mp3", "text": "Wykończenie! Maczeta w pizdę i po sprawie." },
+    { "file": "finisher-2.mp3", "text": "Finisher! Leżeć, kurwo, i nie wstawać." },
+    { "file": "finisher-3.mp3", "text": "Koniec zabawy, suko. Maczeta kończy robotę." },
+
+    { "file": "weapon-1.mp3", "text": "Nowy sprzęt. Zaraz kogoś jebnę." },
+    { "file": "weapon-2.mp3", "text": "Zmiana broni. Ta lepiej jebnie." },
+    { "file": "weapon-3.mp3", "text": "O kurwa, nowa maczeta. Będzie masakra." },
+
+    { "file": "lowhealth-1.mp3", "text": "Kurwa, mało życia. Muszę uważać." },
+    { "file": "lowhealth-2.mp3", "text": "Ledwo stoję, kurwa. Jeden cios i po mnie." },
+    { "file": "lowhealth-3.mp3", "text": "Te suki prawie mnie zjebały." },
+
+    { "file": "dash-1.mp3", "text": "Unik, kurwa!" },
+
+    { "file": "taunt-1.mp3", "text": "Zadyma trwa, kurwa. Plac we krwi." },
+    { "file": "taunt-2.mp3", "text": "Babska jatka na Rynku. Obwarzanki czekają, kurwa." },
+    { "file": "taunt-3.mp3", "text": "Kominiarki kontra maczety. Tylko w Krakowie, kurwa." },
+    { "file": "taunt-4.mp3", "text": "Kraków to pierdolona dżungla. I ja tu rządzę." },
+    { "file": "taunt-5.mp3", "text": "Pierdolona zadyma na cały Rynek. Podoba mi się." }
+  ]
+}
