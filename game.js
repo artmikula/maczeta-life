@@ -1,4 +1,8 @@
 import * as THREE from "three";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 const overlay = document.getElementById("overlay");
 const titleEl = document.getElementById("title");
@@ -22,6 +26,7 @@ const leaderboardEl = document.getElementById("leaderboard");
 const feedList = document.getElementById("feed-list");
 const announcerEl = document.getElementById("announcer");
 const impactFlashEl = document.getElementById("impact-flash");
+const bloodOverlayEl = document.getElementById("blood-overlay");
 const adTitleEls = [
   document.getElementById("ad-title-1"),
   document.getElementById("ad-title-2"),
@@ -62,7 +67,7 @@ const FURY_CHARGE_PER_KILL = 28;
 const FURY_DURATION = 8;
 const PICKUP_LIFETIME = 12;
 const MAX_ENEMY_PLAYER_FOCUS = 2;
-const HITSTOP_DURATION = 0.08;
+const HITSTOP_DURATION = 0.18;
 const FINISHER_THRESHOLD = 0.25;
 const KILL_SPEED_BOOST = 1.35;
 const KILL_SPEED_BOOST_DURATION = 1.2;
@@ -110,6 +115,112 @@ music.volume = 0.24;
 music.preload = "auto";
 
 const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function playSfx(type) {
+  const ctx = getAudioCtx();
+  if (ctx.state === "suspended") ctx.resume();
+  const now = ctx.currentTime;
+
+  if (type === "hit") {
+    const noise = ctx.createBufferSource();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.12, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (data.length * 0.15));
+    noise.buffer = buf;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(1800, now);
+    filter.frequency.exponentialRampToValueAtTime(200, now + 0.1);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.7, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+    noise.connect(filter).connect(gain).connect(ctx.destination);
+    noise.start(now);
+
+    const thud = ctx.createOscillator();
+    thud.type = "sine";
+    thud.frequency.setValueAtTime(90, now);
+    thud.frequency.exponentialRampToValueAtTime(30, now + 0.08);
+    const thudGain = ctx.createGain();
+    thudGain.gain.setValueAtTime(0.6, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+    thud.connect(thudGain).connect(ctx.destination);
+    thud.start(now);
+    thud.stop(now + 0.1);
+  }
+
+  if (type === "slash") {
+    const noise = ctx.createBufferSource();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.15, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(i / data.length * Math.PI) * 0.4;
+    noise.buffer = buf;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(3000, now);
+    filter.frequency.exponentialRampToValueAtTime(800, now + 0.12);
+    filter.Q.value = 2;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+    noise.connect(filter).connect(gain).connect(ctx.destination);
+    noise.start(now);
+  }
+
+  if (type === "kill") {
+    playSfx("hit");
+    const crunch = ctx.createBufferSource();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.25, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      const t = i / data.length;
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 6) * (1 + Math.sin(t * 400) * 0.3);
+    }
+    crunch.buffer = buf;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(2400, now);
+    filter.frequency.exponentialRampToValueAtTime(100, now + 0.2);
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.5, now + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+    crunch.connect(filter).connect(gain).connect(ctx.destination);
+    crunch.start(now + 0.03);
+
+    const boom = ctx.createOscillator();
+    boom.type = "sine";
+    boom.frequency.setValueAtTime(60, now);
+    boom.frequency.exponentialRampToValueAtTime(20, now + 0.18);
+    const boomGain = ctx.createGain();
+    boomGain.gain.setValueAtTime(0.8, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+    boom.connect(boomGain).connect(ctx.destination);
+    boom.start(now);
+    boom.stop(now + 0.22);
+  }
+
+  if (type === "miss") {
+    const noise = ctx.createBufferSource();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.2, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.sin(i / data.length * Math.PI) * 0.25;
+    noise.buffer = buf;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "highpass";
+    filter.frequency.value = 2000;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+    noise.connect(filter).connect(gain).connect(ctx.destination);
+    noise.start(now);
+  }
+}
 
 const VOICE_LINES = {
   start: ["./assets/voice/start-1.mp3", "./assets/voice/start-2.mp3", "./assets/voice/start-3.mp3"],
@@ -193,6 +304,36 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.08;
 document.body.appendChild(renderer.domElement);
 
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  0.35,
+  0.6,
+  0.85
+);
+composer.addPass(bloomPass);
+
+const vignetteShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+    darkness: { value: 1.6 },
+    offset: { value: 1.1 },
+  },
+  vertexShader: `varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float darkness; uniform float offset; varying vec2 vUv;
+    void main() {
+      vec4 texel = texture2D(tDiffuse, vUv);
+      vec2 uv = (vUv - vec2(0.5)) * vec2(offset);
+      texel.rgb *= 1.0 - darkness * dot(uv, uv);
+      gl_FragColor = texel;
+    }`,
+};
+const vignettePass = new ShaderPass(vignetteShader);
+composer.addPass(vignettePass);
+
 const clock = new THREE.Clock();
 const world = new THREE.Group();
 scene.add(world);
@@ -242,6 +383,9 @@ const state = {
   adTimer: 0,
   hitstop: 0,
   killSpeedBoost: 0,
+  shakeIntensity: 0,
+  shakeDecay: 0,
+  bloodOverlay: 0,
 };
 
 const hemi = new THREE.HemisphereLight(0xf8fbff, 0x8f8a82, 2.15);
@@ -999,6 +1143,8 @@ function createFighter({ name, weapon, palette }) {
     strafeSeed: Math.random() * Math.PI * 2,
     invuln: 0,
     pressureBias: Math.random(),
+    deathSpin: 0,
+    deathY: 0,
   };
 }
 
@@ -1440,6 +1586,9 @@ function startGame() {
   state.flashTimer = 0;
   state.hitstop = 0;
   state.killSpeedBoost = 0;
+  state.shakeIntensity = 0;
+  state.shakeDecay = 0;
+  state.bloodOverlay = 0;
   overlay.classList.add("hidden");
   initialsWrap.classList.add("hidden");
   player.weaponIndex = 0;
@@ -1670,8 +1819,19 @@ function updateEnemy(enemy, dt) {
 
   if (enemy.dead) {
     enemy.deathTimer -= dt;
-    enemy.group.rotation.z = Math.min(enemy.group.rotation.z + dt * 1.4, 1.1);
-    enemy.root.position.y = Math.max(enemy.root.position.y - dt * 0.52, -0.18);
+    enemy.hitVelocity.y -= 12 * dt;
+    enemy.hitVelocity.x *= 0.96;
+    enemy.hitVelocity.z *= 0.96;
+    enemy.group.position.addScaledVector(enemy.hitVelocity, dt);
+    clampToMap(enemy.group.position);
+    if (enemy.group.position.y < 0) {
+      enemy.group.position.y = 0;
+      enemy.hitVelocity.y = 0;
+      enemy.hitVelocity.multiplyScalar(0.7);
+    }
+    enemy.group.rotation.z = Math.min(enemy.group.rotation.z + dt * 3.5, 1.6);
+    enemy.group.rotation.x += (enemy.deathSpin || 0) * dt;
+    enemy.root.position.y = Math.max(enemy.root.position.y - dt * 1.2, -0.3);
     if (enemy.deathTimer <= 0 && state.running) {
       respawnEnemy(enemy);
     }
@@ -1894,7 +2054,9 @@ function performAttack(attacker) {
     .setY(1.3);
   spawnSlash(slashOrigin, attacker.attackHeavy ? 0xffdcaf : 0xff6e5c);
 
+  if (attacker.isPlayer) playSfx("slash");
   if (!hitSomeone && attacker.isPlayer) {
+    playSfx("miss");
     if (Math.random() > 0.55) {
       pushFeed("Machnąłeś w powietrze. Podejdź bliżej albo użyj dasha.");
       playVoice("miss");
@@ -1933,6 +2095,7 @@ function applyDamage(target, attacker, damage) {
   }
   spawnBlood(getFighterPosition(target).clone().setY(1.28), 14 + Math.floor(Math.random() * 9));
   flashImpact(target.isPlayer ? 0.85 : 0.45);
+  if (attacker.isPlayer) playSfx("hit");
 
   if (attacker.isPlayer && !target.isPlayer) {
     state.comboCount += attacker.attackHeavy ? 2 : 1;
@@ -1960,6 +2123,8 @@ function applyDamage(target, attacker, damage) {
     state.comboMultiplier = 1;
     player.cameraKick = 0.12;
     player.regenDelay = PLAYER_REGEN_DELAY;
+    state.shakeIntensity = Math.max(state.shakeIntensity, 0.4);
+    state.shakeDecay = 6;
     player.pitch = THREE.MathUtils.clamp(player.pitch + (Math.random() - 0.5) * 0.06, -MAX_PITCH, MAX_PITCH);
     pushFeed(`${attacker.name} trafiła cię ${attacker.weapon.instrumental}.`);
     if (target.health > 0 && target.health <= target.maxHealth * 0.3) {
@@ -1982,7 +2147,16 @@ function handleDefeat(target, attacker) {
   target.attackTimer = 0;
   target.attackCooldown = 0.4;
   target.deathTimer = RESPAWN_DELAY;
-  target.hitVelocity.set(0, 0, 0);
+
+  if (attacker.isPlayer && !target.isPlayer) {
+    forwardVector.set(Math.sin(player.yaw), 0, Math.cos(player.yaw));
+    target.hitVelocity.copy(forwardVector).multiplyScalar(attacker.attackHeavy ? 14 : 9);
+    target.hitVelocity.y = 3 + Math.random() * 2;
+    target.deathSpin = (Math.random() - 0.5) * 8;
+  } else {
+    target.hitVelocity.set(0, 0, 0);
+    target.deathSpin = 0;
+  }
 
   if (attacker.isPlayer && !target.isPlayer) {
     state.streak += 1;
@@ -1994,6 +2168,7 @@ function handleDefeat(target, attacker) {
     state.furyCharge = Math.min(100, state.furyCharge + FURY_CHARGE_PER_KILL);
     state.hitstop = HITSTOP_DURATION;
     state.killSpeedBoost = KILL_SPEED_BOOST_DURATION;
+    playSfx("kill");
     spawnBlood(getFighterPosition(target).clone().setY(1.18), 36 + Math.floor(Math.random() * 16));
     pushFeed(`Wybebeszyłeś ${target.name} ${attacker.weapon.instrumental}.`);
     if (state.streak >= 6) {
@@ -2007,6 +2182,9 @@ function handleDefeat(target, attacker) {
       playVoice("kill");
     }
     flashImpact(1.4);
+    state.shakeIntensity = state.streak >= 4 ? 1.6 : 1.0;
+    state.shakeDecay = 4.5;
+    state.bloodOverlay = state.streak >= 3 ? 0.9 : 0.6;
     if (state.streak % 4 === 0 && state.furyTime <= 0) {
       triggerFury();
     } else if (state.furyCharge >= 100 && state.furyTime <= 0) {
@@ -2135,7 +2313,10 @@ function respawnEnemy(enemy) {
   enemy.flashTimer = 0;
   enemy.root.position.y = 0;
   enemy.group.rotation.z = 0;
+  enemy.group.rotation.x = 0;
   enemy.group.position.copy(randomMapPoint());
+  enemy.group.position.y = 0;
+  enemy.deathSpin = 0;
   enemy.facing = Math.random() * Math.PI * 2;
   enemy.group.rotation.y = enemy.facing;
   enemy.hitVelocity.set(0, 0, 0);
@@ -2256,9 +2437,12 @@ function updateCamera(dt) {
   viewOffset.set(0, PLAYER_EYE_HEIGHT + moveBob - player.cameraKick * 0.25, 0);
   cameraPosition.copy(player.group.position).add(viewOffset);
   camera.position.lerp(cameraPosition, 1 - Math.exp(-dt * 16));
-  camera.rotation.y = player.yaw;
-  camera.rotation.x = THREE.MathUtils.clamp(player.pitch + player.cameraKick * 0.2, -MAX_PITCH, MAX_PITCH);
-  camera.rotation.z = Math.sin(state.time * 9) * player.cameraKick * 0.12;
+  const shk = state.shakeIntensity;
+  camera.position.x += (Math.random() - 0.5) * shk * 0.5;
+  camera.position.y += (Math.random() - 0.5) * shk * 0.3;
+  camera.rotation.y = player.yaw + (Math.random() - 0.5) * shk * 0.06;
+  camera.rotation.x = THREE.MathUtils.clamp(player.pitch + player.cameraKick * 0.2 + (Math.random() - 0.5) * shk * 0.04, -MAX_PITCH, MAX_PITCH);
+  camera.rotation.z = Math.sin(state.time * 9) * player.cameraKick * 0.12 + (Math.random() - 0.5) * shk * 0.03;
   camera.fov = THREE.MathUtils.lerp(camera.fov, state.furyTime > 0 ? 80 : 76, 1 - Math.exp(-dt * 8));
   camera.updateProjectionMatrix();
 }
@@ -2285,13 +2469,15 @@ function animate() {
 
   if (state.hitstop > 0) {
     state.hitstop -= rawDt;
-    renderer.render(scene, camera);
+    composer.render();
     return;
   }
 
   const dt = rawDt;
   state.time += dt;
   state.killSpeedBoost = Math.max(0, state.killSpeedBoost - dt);
+  state.shakeIntensity = Math.max(0, state.shakeIntensity - dt * state.shakeDecay);
+  state.bloodOverlay = Math.max(0, state.bloodOverlay - dt * 2.5);
   voiceState.cooldown = Math.max(0, voiceState.cooldown - dt);
   state.comboTimer = Math.max(0, state.comboTimer - dt);
   state.furyTime = Math.max(0, state.furyTime - dt);
@@ -2311,6 +2497,9 @@ function animate() {
   if (impactFlashEl) {
     impactFlashEl.style.opacity = String(Math.min(state.flashTimer * 3.4, 0.42));
   }
+  if (bloodOverlayEl) {
+    bloodOverlayEl.style.opacity = String(Math.min(state.bloodOverlay, 0.7));
+  }
 
   if (state.adTimer <= 0) {
     rotateAds();
@@ -2327,7 +2516,7 @@ function animate() {
   updatePickups(dt);
   updateParticles(dt);
   updateCamera(dt);
-  renderer.render(scene, camera);
+  composer.render();
 }
 
 function handleKey(event, isDown) {
@@ -2471,6 +2660,8 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  composer.setSize(window.innerWidth, window.innerHeight);
+  bloomPass.resolution.set(window.innerWidth, window.innerHeight);
 });
 
 if (isTouchDevice) {

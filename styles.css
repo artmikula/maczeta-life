@@ -419,6 +419,15 @@ canvas {
   opacity: 0;
 }
 
+.blood-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(140, 10, 10, 0.85) 100%);
+  opacity: 0;
+  z-index: 60;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
