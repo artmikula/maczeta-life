@@ -41,13 +41,13 @@ const LEADERBOARD_LIMIT = 8;
 const ENEMY_TARGET_COUNT = 5;
 const MAP_HALF = 34;
 const PLAYER_MAX_HEALTH = 180;
-const ENEMY_MAX_HEALTH = 55;
+const ENEMY_MAX_HEALTH = 36;
 const PLAYER_EYE_HEIGHT = 1.68;
 const ATTACK_FLASH_TIME = 0.12;
 const RESPAWN_DELAY = 2.4;
 const MOUSE_SENSITIVITY = 0.0023;
 const MAX_PITCH = 1.05;
-const PLAYER_DAMAGE_MULTIPLIER = 1.2;
+const PLAYER_DAMAGE_MULTIPLIER = 2.2;
 const ENEMY_DAMAGE_MULTIPLIER = 0.18;
 const PLAYER_HIT_HEAL = 8;
 const PLAYER_KILL_HEAL = 40;
@@ -1265,12 +1265,12 @@ function renderLeaderboard() {
   });
 }
 
-function sanitizeInitials(value) {
+function sanitizeInitials(value, forSave = false) {
   const cleaned = value
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "")
     .slice(0, 3);
-  return cleaned || "MZ";
+  return forSave ? (cleaned || "MZ") : cleaned;
 }
 
 function saveCurrentScore() {
@@ -1278,7 +1278,7 @@ function saveCurrentScore() {
     return;
   }
 
-  const initials = sanitizeInitials(initialsInput.value);
+  const initials = sanitizeInitials(initialsInput.value, true);
   initialsInput.value = initials;
   leaderboard.push({
     initials,
@@ -1855,7 +1855,7 @@ function performAttack(attacker) {
   const range =
     attacker.weapon.reach +
     (attacker.attackHeavy ? 0.35 : 0) +
-    (attacker.isPlayer ? 0.95 + (state.furyTime > 0 ? 0.24 : 0) : 0);
+    (attacker.isPlayer ? 1.6 + (state.furyTime > 0 ? 0.4 : 0) : 0);
   let hitSomeone = false;
 
   for (const target of fighters) {
@@ -1873,8 +1873,8 @@ function performAttack(attacker) {
     const arc = scratch.dot(forwardVector);
     const minArc = attacker.isPlayer
       ? attacker.attackHeavy
-        ? -0.42
-        : -0.24
+        ? -0.85
+        : -0.7
       : attacker.attackHeavy
         ? -0.08
         : 0.14;
